@@ -20,7 +20,6 @@
         android:layout_above="@+id/textViewVersion"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/margin_medium"
         app:indicatorColor="@color/colorPrimary"
         app:indicatorName="PacmanIndicator" />
 
@@ -28,20 +27,11 @@
         android:id="@+id/textViewVersion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/tvPolicy"
+        android:layout_alignParentBottom="true"
         android:gravity="center"
+        android:padding="@dimen/padding_medium"
         android:textColor="@color/black"
         android:textSize="@dimen/txt_medium"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tvPolicy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:padding="@dimen/padding_medium"
-        android:text="@string/policy"
-        android:textColor="@drawable/text_black_primary"
-        android:textSize="@dimen/txt_medium" />
 </RelativeLayout>

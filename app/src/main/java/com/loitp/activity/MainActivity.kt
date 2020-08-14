@@ -55,7 +55,7 @@ class MainActivity : BaseFontActivity(), NavigationView.OnNavigationItemSelected
         //cover
         LImageUtil.load(context = activity, url = getString(R.string.link_cover), imageView = navViewStart.getHeaderView(0).ivCover)
 
-        tvAd.text = LStoreUtil.readTxtFromRawFolder(context = activity, nameOfRawFile = R.raw.ad)
+        //pdf
 
         switchHomeScreen()
     }
@@ -102,18 +102,6 @@ class MainActivity : BaseFontActivity(), NavigationView.OnNavigationItemSelected
             R.id.navHome -> {
                 logD("onNavigationItemSelected navHome")
                 LScreenUtil.addFragment(activity, R.id.flContainer, HomeFragment(), false)
-            }
-            R.id.navGallery -> {
-                val intent = Intent(activity, GalleryCoreSplashActivity::class.java)
-                intent.putExtra(Constants.AD_UNIT_ID_BANNER, getString(R.string.str_b))
-                intent.putExtra(Constants.BKG_SPLASH_SCREEN, getString(R.string.link_cover))
-                intent.putExtra(Constants.BKG_ROOT_VIEW, R.drawable.bkg_black)
-                //neu muon remove albumn nao thi cu pass id cua albumn do
-                val removeAlbumFlickrList = ArrayList<String>()
-                removeAlbumFlickrList.add(Constants.FLICKR_ID_STICKER)
-                intent.putStringArrayListExtra(Constants.KEY_REMOVE_ALBUM_FLICKR_LIST, removeAlbumFlickrList)
-                startActivity(intent)
-                LActivityUtil.tranIn(activity)
             }
             R.id.navRateApp -> {
                 LSocialUtil.rateApp(activity = activity, packageName = packageName)

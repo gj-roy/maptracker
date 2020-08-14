@@ -7,9 +7,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import com.core.base.BaseFontActivity
-import com.core.utilities.*
+import com.core.utilities.LActivityUtil
+import com.core.utilities.LDialogUtil
+import com.core.utilities.LUIUtil
 import com.interfaces.Callback2
-import com.interfaces.GGCallback
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -17,28 +18,15 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.loitp.BuildConfig
 import com.loitp.R
-import com.loitp.app.LApplication
-import com.model.GG
 import kotlinx.android.synthetic.main.activity_splash.*
-import okhttp3.Call
 
 class SplashActivity : BaseFontActivity() {
-    private var isAnimDone = false
-    private var isCheckReadyDone = false
     private var isShowDialogCheck = false
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        LUIUtil.setDelay(mls = 1500, runnable = Runnable {
-            isAnimDone = true
-            goToHome()
-        })
         textViewVersion.text = "Version ${BuildConfig.VERSION_NAME}"
-        tvPolicy.setOnClickListener {
-            LSocialUtil.openBrowserPolicy(context = activity)
-        }
     }
 
     override fun onResume() {
@@ -59,7 +47,7 @@ class SplashActivity : BaseFontActivity() {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport) {
                         // check if all permissions are granted
                         if (report.areAllPermissionsGranted()) {
-                            checkReady()
+                            goToHome()
                         } else {
                             showShouldAcceptPermission()
                         }
@@ -83,14 +71,12 @@ class SplashActivity : BaseFontActivity() {
     }
 
     private fun goToHome() {
-        if (isAnimDone && isCheckReadyDone) {
-            val intent = Intent(activity, MainActivity::class.java)
-            startActivity(intent)
-            LActivityUtil.tranIn(activity)
-            LUIUtil.setDelay(mls = 1000, runnable = Runnable {
-                finish()
-            })
-        }
+        val intent = Intent(activity, MainActivity::class.java)
+        startActivity(intent)
+        LActivityUtil.tranIn(activity)
+        LUIUtil.setDelay(mls = 1000, runnable = Runnable {
+            finish()
+        })
     }
 
     override fun setFullScreen(): Boolean {
@@ -147,74 +133,4 @@ class SplashActivity : BaseFontActivity() {
         alertDialog.setCancelable(false)
     }
 
-    private fun showDialogNotReady() {
-        runOnUiThread {
-            val title = if (LConnectivityUtil.isConnected(activity)) {
-                getString(R.string.app_is_not_ready)
-            } else {
-                getString(R.string.check_ur_connection)
-            }
-            val alertDial = LDialogUtil.showDialog2(context = activity,
-                    title = getString(R.string.warning),
-                    msg = title,
-                    button1 = getString(R.string.exit),
-                    button2 = getString(R.string.try_again),
-                    callback2 = object : Callback2 {
-                        override fun onClick1() {
-                            onBackPressed()
-                        }
-
-                        override fun onClick2() {
-                            checkReady()
-                        }
-                    })
-            alertDial.setCancelable(false)
-        }
-    }
-
-    private fun checkReady() {
-
-        fun setReady() {
-            runOnUiThread {
-                isCheckReadyDone = true
-                goToHome()
-            }
-        }
-
-        if (LPrefUtil.getCheckAppReady(activity)) {
-            setReady()
-            return
-        }
-        val linkGGDriveCheckReady = getString(R.string.link_gg_drive)
-        LStoreUtil.getTextFromGGDrive(
-                context = activity,
-                linkGGDrive = linkGGDriveCheckReady,
-                ggCallback = object : GGCallback {
-                    override fun onGGFailure(call: Call, e: Exception) {
-                        e.printStackTrace()
-                        showDialogNotReady()
-                    }
-
-                    override fun onGGResponse(listGG: ArrayList<GG>) {
-                        logD("getGG listGG: -> " + LApplication.gson.toJson(listGG))
-
-                        fun isReady(): Boolean {
-                            listGG.forEach { gg ->
-                                if (activity.packageName == gg.pkg) {
-                                    return gg.isReady
-                                }
-                            }
-                            return false
-                        }
-
-                        val isReady = isReady()
-                        if (isReady) {
-                            LPrefUtil.setCheckAppReady(context = activity, value = true)
-                            setReady()
-                        } else {
-                            showDialogNotReady()
-                        }
-                    }
-                })
-    }
 }
