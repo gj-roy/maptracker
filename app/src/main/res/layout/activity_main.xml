@@ -22,9 +22,10 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navViewEnd"
-        android:layout_width="@dimen/w_300"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="end"
+        android:layout_marginStart="@dimen/w_50"
         android:background="@color/colorPrimary"
         android:fitsSystemWindows="false">
 
