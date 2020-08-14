@@ -12,7 +12,10 @@ class HistoryFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         btRecord.setSafeOnClickListener {
-
+            if (parentFragment == null) {
+                logD("parentFragment == null")
+            }
+            (parentFragment as HomeFragment).addFragment(MapFragment())
         }
     }
 
@@ -21,6 +24,6 @@ class HistoryFragment : BaseFragment() {
     }
 
     override fun setTag(): String? {
-        return javaClass.simpleName
+        return "loitpp" + javaClass.simpleName
     }
 }

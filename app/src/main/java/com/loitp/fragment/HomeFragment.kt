@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.core.base.BaseFragment
-import com.core.utilities.LScreenUtil
 import com.loitp.R
 
 class HomeFragment : BaseFragment() {
@@ -23,7 +22,10 @@ class HomeFragment : BaseFragment() {
 
     fun addFragment(fragment: Fragment) {
         activity?.let {
-            LScreenUtil.addFragment(activity = it, containerFrameLayoutIdRes = R.id.flContainer, fragment = fragment, isAddToBackStack = false)
+            val transaction = childFragmentManager.beginTransaction()
+            transaction.add(R.id.flContainerHome, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
     }
 }
