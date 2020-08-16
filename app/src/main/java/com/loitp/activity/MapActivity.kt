@@ -181,11 +181,23 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         currentLocationMarker?.remove()
         mCurrentLocation?.let { location ->
 
-            val latRound = LMathUtil.roundDouble(value = location.latitude, newScale = 3)
-            val lngRound = LMathUtil.roundDouble(value = location.longitude, newScale = 3)
+//            val latRound = LMathUtil.roundDouble(value = location.latitude, newScale = 3)
+//            val lngRound = LMathUtil.roundDouble(value = location.longitude, newScale = 3)
 
 //            val latRound = location.latitude
 //            val lngRound = location.longitude
+
+
+            val latRound: Double
+            val lngRound: Double
+            //TODO
+            if (firstLocationMarker == null) {
+                latRound = location.latitude
+                lngRound = location.longitude
+            } else {
+                latRound = location.latitude + 0.0125 * listLoc.size
+                lngRound = location.longitude + 0.0125 * listLoc.size
+            }
 
             val latLng = LatLng(latRound, lngRound)
 
@@ -227,7 +239,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     }
 
     private fun addFirstLocationMaker(latLng: LatLng, location: Location) {
-//        logD("addFirstLocationMaker")
+        logD("addFirstLocationMaker")
         val markerOptions = LocUtil.getMaker(context = activity, latLng = latLng, location = location, color = BitmapDescriptorFactory.HUE_RED)
         firstLocationMarker = mGoogleMap?.addMarker(markerOptions)
         mGoogleMap?.let {
@@ -237,11 +249,13 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     }
 
     private fun updateCurrentLocationMaker(latLng: LatLng, location: Location) {
-//        logD("updateCurrentLocationMaker")
+        logD("updateCurrentLocationMaker")
         val markerOptions = LocUtil.getMaker(context = activity, latLng = latLng, location = location, color = BitmapDescriptorFactory.HUE_CYAN)
         currentLocationMarker = mGoogleMap?.addMarker(markerOptions)
-        mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng))
-//        mGoogleMap?.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_TO))
+        mGoogleMap?.let {
+            it.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+            it.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_TO))
+        }
     }
 
     private fun initLocation() {
@@ -284,21 +298,17 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
 
     private fun drawPolyLineOnMap() {
         val listLatLng = ArrayList<LatLng>()
-        listLoc.forEach { loc ->
+        listLoc.takeLast(2).forEach { loc ->
             loc.afterLatLng?.let {
                 listLatLng.add(element = it)
             }
         }
-
-        if (listLoc.isNotEmpty()) {
+        if (listLatLng.isNotEmpty()) {
             val polyOptions = PolylineOptions()
             polyOptions.color(Color.CYAN)
             polyOptions.width(25f)
             polyOptions.addAll(listLatLng)
-            mGoogleMap?.let {
-                it.clear()
-                it.addPolyline(polyOptions)
-            }
+            mGoogleMap?.addPolyline(polyOptions)
             val builder = LatLngBounds.Builder()
             for (latLng in listLatLng) {
                 builder.include(latLng)
@@ -377,7 +387,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                 .subscribeWith(
                         object : DisposableObserver<Long?>() {
                             override fun onNext(value: Long) {
-                                logD("startTimer onNext : value : $value")
+//                                logD("startTimer onNext : value : $value")
                                 tvTimer.text = TimeUtil.getDurationString(s = value)
                             }
 
@@ -386,7 +396,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                             }
 
                             override fun onComplete() {
-                                logD("startTimer onComplete")
+//                                logD("startTimer onComplete")
                             }
                         }
                 )
