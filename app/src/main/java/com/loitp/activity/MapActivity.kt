@@ -211,6 +211,9 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                 val distance = LocUtil.getDistance(firstLoc?.afterLatLng, lastLoc?.beforeLatLng)
                 val distanceInKm = distance?.div(1000F)
                 tvDistance.text = "$distanceInKm"
+
+                //set avg speed
+                tvAvgSpeed.text = "${loc.getSpeed()}"
             }
         }
     }
