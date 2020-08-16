@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.core.base.BaseFontActivity
 import com.core.utilities.LDialogUtil
+import com.core.utilities.LMathUtil
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
@@ -172,11 +173,11 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         currentLocationMarker?.remove()
         mCurrentLocation?.let { location ->
 
-//            val latRound = LMathUtil.roundDouble(value = location.latitude, newScale = 4)
-//            val lngRound = LMathUtil.roundDouble(value = location.longitude, newScale = 4)
+            val latRound = LMathUtil.roundDouble(value = location.latitude, newScale = 4)
+            val lngRound = LMathUtil.roundDouble(value = location.longitude, newScale = 4)
 
-            val latRound = location.latitude
-            val lngRound = location.longitude
+//            val latRound = location.latitude
+//            val lngRound = location.longitude
 
             val latLng = LatLng(latRound, lngRound)
 
@@ -220,10 +221,8 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
 //        logD("updateCurrentLocationMaker")
         val markerOptions = LocUtil.getMaker(context = activity, latLng = latLng, location = location, color = BitmapDescriptorFactory.HUE_CYAN)
         currentLocationMarker = mGoogleMap?.addMarker(markerOptions)
-        mGoogleMap?.let {
-            it.moveCamera(CameraUpdateFactory.newLatLng(latLng))
-//            it.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_TO))
-        }
+        mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+//        mGoogleMap?.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_TO))
     }
 
     private fun initLocation() {
