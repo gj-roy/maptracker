@@ -32,6 +32,7 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.loitp.R
 import com.loitp.model.Loc
+import com.loitp.util.ImageUtil
 import com.loitp.util.LocUtil
 import com.loitp.util.TimeUtil
 import com.views.setSafeOnClickListener
@@ -95,7 +96,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
             handleContinue()
         }
         btStop.setSafeOnClickListener {
-//TODO
+            handleStop()
         }
     }
 
@@ -445,5 +446,17 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         btPause.visibility = View.VISIBLE
         btContinue.visibility = View.GONE
         btStop.visibility = View.GONE
+    }
+
+    private fun handleStop() {
+        mGoogleMap?.snapshot { bitmap ->
+            val fileSaved = ImageUtil.saveBitmap(bitmap, "${System.currentTimeMillis()}.png")
+            logD("handleStop isSaved ${fileSaved?.path}")
+            if (fileSaved == null) {
+                //TODO
+            } else {
+
+            }
+        }
     }
 }
