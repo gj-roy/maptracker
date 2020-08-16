@@ -16,7 +16,7 @@ import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import com.github.barteksc.pdfviewer.util.FitPolicy
 import com.google.android.material.navigation.NavigationView
 import com.loitp.R
-import com.loitp.fragment.HomeFragment
+import com.loitp.fragment.HistoryFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_drawer_end.*
 import kotlinx.android.synthetic.main.view_drawer_main.*
@@ -149,7 +149,7 @@ class MainActivity : BaseFontActivity(), NavigationView.OnNavigationItemSelected
         when (item.itemId) {
             R.id.navHome -> {
                 logD("onNavigationItemSelected navHome")
-                LScreenUtil.addFragment(activity, R.id.flContainer, HomeFragment(), false)
+                LScreenUtil.addFragment(activity, R.id.flContainer, HistoryFragment(), false)
             }
             R.id.navRateApp -> {
                 LSocialUtil.rateApp(activity = activity, packageName = packageName)
