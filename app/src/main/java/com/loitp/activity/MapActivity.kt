@@ -455,7 +455,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
             if (fileSaved == null) {
                 //TODO
             } else {
-
+                showShort(getString(R.string.cannot_save_map))
             }
         }
     }
