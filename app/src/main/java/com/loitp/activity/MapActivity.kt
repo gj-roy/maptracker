@@ -1,13 +1,10 @@
 package com.loitp.activity
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.location.Geocoder
 import android.location.Location
-import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -18,7 +15,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.core.base.BaseFontActivity
 import com.core.utilities.LDialogUtil
-import com.core.utilities.LUIUtil
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
@@ -38,9 +34,6 @@ import com.loitp.model.Loc
 import com.loitp.util.LocUtil
 import com.views.setSafeOnClickListener
 import kotlinx.android.synthetic.main.activity_map.*
-import java.io.IOException
-import java.util.*
-import kotlin.collections.ArrayList
 
 class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -49,6 +42,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     companion object {
         private const val UPDATE_INTERVAL_IN_MILLISECONDS: Long = 8000
         private const val FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS: Long = 5000
+        private const val ZOOM_TO = 11f
     }
 
     private var googleApiClient: GoogleApiClient? = null
@@ -84,17 +78,14 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
 
         initLocation()
 
-//        btRouterAnim.setSafeOnClickListener {
-//            drawRouterAnim()
-//        }
         btPause.setSafeOnClickListener {
-
+//TODO
         }
         btContinue.setSafeOnClickListener {
-
+//TODO
         }
         btStop.setSafeOnClickListener {
-
+//TODO
         }
     }
 
@@ -210,6 +201,9 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
             } else {
                 updateCurrentLocationMaker(latLng = latLng, location = location)
             }
+
+            //draw router
+            drawPolyLineOnMap()
         }
     }
 
@@ -219,7 +213,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         firstLocationMarker = mGoogleMap?.addMarker(markerOptions)
         mGoogleMap?.let {
             it.moveCamera(CameraUpdateFactory.newLatLng(latLng))
-            it.animateCamera(CameraUpdateFactory.zoomTo(11f))
+            it.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_TO))
         }
     }
 
@@ -229,7 +223,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         currentLocationMarker = mGoogleMap?.addMarker(markerOptions)
         mGoogleMap?.let {
             it.moveCamera(CameraUpdateFactory.newLatLng(latLng))
-            it.animateCamera(CameraUpdateFactory.zoomTo(11f))
+//            it.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_TO))
         }
     }
 
@@ -271,62 +265,30 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         buildClient()
     }
 
-    private fun drawRouter() {
-        val list = ArrayList<LatLng>()
-        list.add(LatLng(10.8785614, 106.8107979))
-        list.add(LatLng(11.8785614, 107.8107979))
-        list.add(LatLng(12.8785614, 108.8107979))
-        list.add(LatLng(13.8785614, 109.8107979))
-        list.add(LatLng(14.8785614, 110.8107979))
-        list.add(LatLng(15.8785614, 115.8107979))
-        list.add(LatLng(20.8785614, 120.8107979))
-        list.add(LatLng(25.8785614, 125.8107979))
-        list.add(LatLng(30.8785614, 130.8107979))
-        drawPolyLineOnMap(list)
-    }
-
-    private fun drawPolyLineOnMap(list: List<LatLng>) {
-        val polyOptions = PolylineOptions()
-        polyOptions.color(Color.RED)
-        polyOptions.width(5f)
-        polyOptions.addAll(list)
-        mGoogleMap?.clear()
-        mGoogleMap?.addPolyline(polyOptions)
-        val builder = LatLngBounds.Builder()
-        for (latLng in list) {
-            builder.include(latLng)
+    private fun drawPolyLineOnMap() {
+        val listLatLng = ArrayList<LatLng>()
+        listLoc.forEach { loc ->
+            loc.afterLatLng?.let {
+                listLatLng.add(element = it)
+            }
         }
-        val bounds = builder.build()
-        //BOUND_PADDING is an int to specify padding of bound.. try 100.
-        val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100)
-        mGoogleMap?.animateCamera(cameraUpdate)
-    }
 
-    private fun drawRouterAnim() {
-        val list = ArrayList<LatLng>()
-        list.add(LatLng(20.8785614, 80.8107979))
-        drawPolyLineOnMap(list)
-        LUIUtil.setDelay(1000, Runnable {
-            list.add(LatLng(25.8785614, 85.8107979))
-            drawPolyLineOnMap(list)
-
-            LUIUtil.setDelay(1000, Runnable {
-                list.add(LatLng(30.8785614, 90.8107979))
-                drawPolyLineOnMap(list)
-
-                LUIUtil.setDelay(1000, Runnable {
-                    list.add(LatLng(35.8785614, 95.8107979))
-                    drawPolyLineOnMap(list)
-                })
-            })
-        })
-    }
-
-    private fun addMakerSydney() {
-        val sydney = LatLng(-34.0, 151.0)
-        mGoogleMap?.let {
-            it.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-            it.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        if (listLoc.isNotEmpty()) {
+            val polyOptions = PolylineOptions()
+            polyOptions.color(Color.RED)
+            polyOptions.width(15f)
+            polyOptions.addAll(listLatLng)
+            mGoogleMap?.let {
+                it.clear()
+                it.addPolyline(polyOptions)
+            }
+            val builder = LatLngBounds.Builder()
+            for (latLng in listLatLng) {
+                builder.include(latLng)
+            }
+//            val bounds = builder.build()
+//            val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100)
+//            mGoogleMap?.animateCamera(cameraUpdate)
         }
     }
 
