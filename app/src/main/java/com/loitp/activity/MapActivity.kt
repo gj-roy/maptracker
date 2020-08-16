@@ -17,7 +17,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.core.base.BaseFontActivity
 import com.core.utilities.LDialogUtil
-import com.core.utilities.LMathUtil
 import com.core.utilities.LUIUtil
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
@@ -64,7 +63,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     private var isShowDialogCheck = false
 
     override fun setTag(): String? {
-        return javaClass.simpleName
+        return "loitpp" + javaClass.simpleName
     }
 
     override fun setLayoutResourceId(): Int {
@@ -83,25 +82,8 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
 
         initLocation()
 
-        btLocation.setSafeOnClickListener {
-            startLocationUpdates()
-        }
-        btAddMaker.setSafeOnClickListener {
-            addMakerSydney()
-        }
-        btRouter.setSafeOnClickListener {
-            drawRouter()
-        }
-
         btRouterAnim.setSafeOnClickListener {
             drawRouterAnim()
-        }
-
-        btDistance.setSafeOnClickListener {
-            val startLatLng = LatLng(10.8785614, 106.8107979)
-            val endLatLng = LatLng(30.8785614, 145.8107979)
-            val distance = getDistance(startLatLng = startLatLng, endLatLng = endLatLng)
-            showShort("distance: $distance (m)")
         }
     }
 
@@ -114,7 +96,6 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
 
     //region permisson
     private fun checkPermission() {
-        showShort("checkPermission")
         isShowDialogCheck = true
         Dexter.withActivity(this)
                 .withPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -143,10 +124,10 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     private fun showSettingsDialog() {
         val alertDialog = LDialogUtil.showDialog2(
                 context = activity,
-                title = "Need Permissions",
+                title = getString(R.string.need_permisson),
                 msg = "This app needs permission to use this feature. You can grant them in app settings.",
-                button1 = "GOTO SETTINGS",
-                button2 = "Cancel",
+                button1 = getString(R.string.setting),
+                button2 = getString(R.string.cancel),
                 callback2 = object : Callback2 {
                     override fun onClick1() {
                         isShowDialogCheck = false
@@ -166,10 +147,10 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     private fun showShouldAcceptPermission() {
         val alertDialog = LDialogUtil.showDialog2(
                 context = activity,
-                title = "Need Permissions",
-                msg = "This app needs permission to use this feature.",
-                button1 = "Okay",
-                button2 = "Cancel",
+                title = getString(R.string.need_permisson),
+                msg = getString(R.string.need_permisson_to_use_app),
+                button1 = getString(R.string.ok),
+                button2 = getString(R.string.cancel),
                 callback2 = object : Callback2 {
                     override fun onClick1() {
                         checkPermission()
@@ -184,13 +165,16 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     //endregion
 
     private fun onChangeLocation() {
-        logD("onChangeLocation " + mCurrentLocation?.latitude + " - " + mCurrentLocation?.longitude)
+//        logD("onChangeLocation " + mCurrentLocation?.latitude + " - " + mCurrentLocation?.longitude)
 
         currentLocationMarker?.remove()
         mCurrentLocation?.let { location ->
 
-            val latRound = LMathUtil.roundDouble(value = location.latitude, newScale = 4)
-            val lngRound = LMathUtil.roundDouble(value = location.longitude, newScale = 4)
+//            val latRound = LMathUtil.roundDouble(value = location.latitude, newScale = 4)
+//            val lngRound = LMathUtil.roundDouble(value = location.longitude, newScale = 4)
+
+            val latRound = location.latitude
+            val lngRound = location.longitude
 
             val latLng = LatLng(latRound, lngRound)
 
@@ -209,7 +193,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
             listLoc.forEach {
                 log += "\n\n\n${it.beforeTimestamp} : ${it.beforeLatLng?.latitude} - ${it.beforeLatLng?.longitude} ~ ${it.afterLatLng?.latitude} - ${it.afterLatLng?.longitude} -> ${it.getDistance()}(m) - ${it.getTimeInSecond()}(s) -> ${it.getSpeed()}(m/s)"
             }
-            tvLog.text = log
+            logD("onChangeLocation $log")
 
             val markerOptions = MarkerOptions()
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
@@ -383,7 +367,6 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         mSettingsClient?.let { settingsClient ->
             settingsClient.checkLocationSettings(mLocationSettingsRequest)
                     .addOnSuccessListener(this) {
-                        showShort("All location settings are satisfied.")
                         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                             mFusedLocationClient?.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper())
@@ -397,18 +380,5 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                         onChangeLocation()
                     }
         }
-    }
-
-    //return in meter
-    private fun getDistance(startLatLng: LatLng, endLatLng: LatLng): Float {
-        val results = floatArrayOf(0f)
-        Location.distanceBetween(
-                startLatLng.latitude,
-                startLatLng.longitude,
-                endLatLng.latitude,
-                endLatLng.longitude,
-                results)
-        logD("getDistance results: " + LApplication.gson.toJson(results))
-        return results[0]
     }
 }
