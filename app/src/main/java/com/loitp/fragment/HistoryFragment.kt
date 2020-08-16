@@ -32,6 +32,7 @@ class HistoryFragment : BaseFragment() {
 
                     override fun onLoadMore() {
                         //TODO
+                        showShort("onLoadMore")
                     }
                 })
         rv.layoutManager = LinearLayoutManager(activity)
@@ -58,7 +59,7 @@ class HistoryFragment : BaseFragment() {
 
     private fun loadData() {
         var cover: String
-        for (i in 0..99) {
+        for (i in 0..5) {
             cover = if (i % 2 == 0) {
                 Constants.URL_IMG_1
             } else {
