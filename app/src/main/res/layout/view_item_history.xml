@@ -18,13 +18,18 @@
         android:layout_height="wrap_content"
         android:foreground="?selectableItemBackground">
 
-        <ImageView
+        <!--<ImageView
             android:id="@+id/ivMap"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/app_name"
             android:scaleType="centerCrop"
-            tools:src="@drawable/ic_launcher_playstore" />
+            tools:src="@drawable/ic_launcher_playstore" />-->
+
+        <com.views.imageview.kenburnview.LKenBurnsView
+            android:id="@+id/ivMap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
