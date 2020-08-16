@@ -3,40 +3,41 @@ package com.loitp.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.core.base.BaseFragment
 import com.core.common.Constants
 import com.core.utilities.LActivityUtil
 import com.loitp.R
 import com.loitp.activity.MapActivity
-import com.loitp.adapter.BookAdapter
-import com.loitp.model.Movie
+import com.loitp.adapter.HistoryAdapter
+import com.loitp.model.History
 import com.views.setSafeOnClickListener
 import kotlinx.android.synthetic.main.frm_history.*
 import java.util.*
 
 class HistoryFragment : BaseFragment() {
 
-    private val movieList = ArrayList<Movie>()
-    private var mAdapter: BookAdapter? = null
+    private val listHistory = ArrayList<History>()
+    private var historyAdapter: HistoryAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mAdapter = BookAdapter(
-                moviesList = movieList,
-                callback = object : BookAdapter.Callback {
-                    override fun onClick(movie: Movie, position: Int) {
+        historyAdapter = HistoryAdapter(
+                moviesList = listHistory,
+                callback = object : HistoryAdapter.Callback {
+                    override fun onClick(history: History, position: Int) {
+                        //TODO
                     }
 
                     override fun onLoadMore() {
-
+                        //TODO
                     }
                 })
         rv.layoutManager = LinearLayoutManager(activity)
-        rv.adapter = mAdapter
-        prepareMovieData()
+        rv.adapter = historyAdapter
+
+        loadData()
 
         btRecord.setSafeOnClickListener {
             activity?.let { a ->
@@ -55,7 +56,7 @@ class HistoryFragment : BaseFragment() {
         return javaClass.simpleName
     }
 
-    private fun prepareMovieData() {
+    private fun loadData() {
         var cover: String
         for (i in 0..99) {
             cover = if (i % 2 == 0) {
@@ -63,9 +64,9 @@ class HistoryFragment : BaseFragment() {
             } else {
                 Constants.URL_IMG_2
             }
-            val movie = Movie("Loitp $i", "Action & Adventure $i", "Year: $i", cover)
-            movieList.add(movie)
+            val history = History(distance = "Loitp $i", avgSpeed = "Action & Adventure $i", timer = "Year: $i", fileName = cover)
+            listHistory.add(history)
         }
-        mAdapter?.notifyDataSetChanged()
+        historyAdapter?.notifyDataSetChanged()
     }
 }

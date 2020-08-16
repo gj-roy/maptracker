@@ -22,11 +22,17 @@ import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : BaseFontActivity() {
     private var isShowDialogCheck = false
+    private var isPlayAnimDone = false
+    private var isAllPermissionGranted = false
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         textViewVersion.text = "Version ${BuildConfig.VERSION_NAME}\n" + getString(R.string.copyright)
+        LUIUtil.setDelay(mls = 2000, runnable = Runnable {
+            isPlayAnimDone = true
+            goToHome()
+        })
     }
 
     override fun onResume() {
@@ -47,6 +53,7 @@ class SplashActivity : BaseFontActivity() {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport) {
                         // check if all permissions are granted
                         if (report.areAllPermissionsGranted()) {
+                            isAllPermissionGranted = true
                             goToHome()
                         } else {
                             showShouldAcceptPermission()
@@ -71,12 +78,15 @@ class SplashActivity : BaseFontActivity() {
     }
 
     private fun goToHome() {
-        val intent = Intent(activity, MainActivity::class.java)
-        startActivity(intent)
-        LActivityUtil.tranIn(activity)
-        LUIUtil.setDelay(mls = 1000, runnable = Runnable {
-            finish()
-        })
+        logD("goToHome isPlayAnimDone $isPlayAnimDone, isAllPermissionGranted: $isAllPermissionGranted")
+        if (isPlayAnimDone && isAllPermissionGranted) {
+            val intent = Intent(activity, MainActivity::class.java)
+            startActivity(intent)
+            LActivityUtil.tranIn(activity)
+            LUIUtil.setDelay(mls = 1000, runnable = Runnable {
+                finish()
+            })
+        }
     }
 
     override fun setFullScreen(): Boolean {
