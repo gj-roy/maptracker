@@ -187,7 +187,6 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
 //            val latRound = location.latitude
 //            val lngRound = location.longitude
 
-
             val latRound: Double
             val lngRound: Double
             //TODO
@@ -195,8 +194,8 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                 latRound = location.latitude
                 lngRound = location.longitude
             } else {
-                latRound = location.latitude + 0.0125 * listLoc.size
-                lngRound = location.longitude + 0.0125 * listLoc.size
+                latRound = location.latitude + 0.00125 * listLoc.size
+                lngRound = location.longitude + 0.00125 * listLoc.size
             }
 
             val latLng = LatLng(latRound, lngRound)
@@ -313,9 +312,9 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
             for (latLng in listLatLng) {
                 builder.include(latLng)
             }
-//            val bounds = builder.build()
-//            val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100)
-//            mGoogleMap?.animateCamera(cameraUpdate)
+            val bounds = builder.build()
+            val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100)
+            mGoogleMap?.animateCamera(cameraUpdate)
         }
     }
 

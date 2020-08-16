@@ -45,9 +45,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:singleLine="true"
                 android:text="@string/n_a"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/txt_32"
+                android:textSize="@dimen/txt_25"
                 android:textStyle="bold" />
 
             <TextView
@@ -73,9 +74,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:singleLine="true"
                 android:text="@string/n_a"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/txt_32"
+                android:textSize="@dimen/txt_25"
                 android:textStyle="bold" />
 
             <TextView
