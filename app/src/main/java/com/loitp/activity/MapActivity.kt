@@ -173,8 +173,8 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         currentLocationMarker?.remove()
         mCurrentLocation?.let { location ->
 
-            val latRound = LMathUtil.roundDouble(value = location.latitude, newScale = 4)
-            val lngRound = LMathUtil.roundDouble(value = location.longitude, newScale = 4)
+            val latRound = LMathUtil.roundDouble(value = location.latitude, newScale = 3)
+            val lngRound = LMathUtil.roundDouble(value = location.longitude, newScale = 3)
 
 //            val latRound = location.latitude
 //            val lngRound = location.longitude
@@ -201,8 +201,16 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                 addFirstLocationMaker(latLng = latLng, location = location)
             } else {
                 updateCurrentLocationMaker(latLng = latLng, location = location)
+
                 //draw router
                 drawPolyLineOnMap()
+
+                //set distance
+                val firstLoc = listLoc.firstOrNull()
+                val lastLoc = listLoc.lastOrNull()
+                val distance = LocUtil.getDistance(firstLoc?.afterLatLng, lastLoc?.beforeLatLng)
+                val distanceInKm = distance?.div(1000F)
+                tvDistance.text = "$distanceInKm"
             }
         }
     }
@@ -273,8 +281,8 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
 
         if (listLoc.isNotEmpty()) {
             val polyOptions = PolylineOptions()
-            polyOptions.color(Color.RED)
-            polyOptions.width(15f)
+            polyOptions.color(Color.CYAN)
+            polyOptions.width(25f)
             polyOptions.addAll(listLatLng)
             mGoogleMap?.let {
                 it.clear()

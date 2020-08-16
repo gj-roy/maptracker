@@ -2,6 +2,7 @@ package com.loitp.model
 
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
+import com.loitp.util.LocUtil
 
 data class Loc(
         var beforeTimestamp: Long = 0,
@@ -11,19 +12,7 @@ data class Loc(
 ) {
     //return in meter
     fun getDistance(): Float? {
-        beforeLatLng?.let { before ->
-            afterLatLng?.let { after ->
-                val results = floatArrayOf(0f)
-                Location.distanceBetween(
-                        before.latitude,
-                        before.longitude,
-                        after.latitude,
-                        after.longitude,
-                        results)
-                return results[0]
-            }
-        }
-        return null
+        return LocUtil.getDistance(beforeLatLng = beforeLatLng, afterLatLng = afterLatLng)
     }
 
     fun getTimeInSecond(): Long {

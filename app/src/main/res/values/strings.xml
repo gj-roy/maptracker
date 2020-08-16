@@ -34,6 +34,6 @@
     <string name="no_data">No data</string>
     <string name="cancel">Cancel</string>
     <string name="distance_km">distance (km)</string>
-    <string name="speed_km_h">speed (km/h)</string>
+    <string name="speed_km_h">avg speed (km/h)</string>
     <string name="n_a">N/A</string>
 </resources>
