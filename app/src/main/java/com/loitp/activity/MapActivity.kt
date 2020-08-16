@@ -200,10 +200,9 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                 addFirstLocationMaker(latLng = latLng, location = location)
             } else {
                 updateCurrentLocationMaker(latLng = latLng, location = location)
+                //draw router
+                drawPolyLineOnMap()
             }
-
-            //draw router
-            drawPolyLineOnMap()
         }
     }
 
