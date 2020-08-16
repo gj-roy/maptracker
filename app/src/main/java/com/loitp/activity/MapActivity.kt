@@ -82,9 +82,9 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
 
         initLocation()
 
-        btRouterAnim.setSafeOnClickListener {
-            drawRouterAnim()
-        }
+//        btRouterAnim.setSafeOnClickListener {
+//            drawRouterAnim()
+//        }
     }
 
     override fun onResume() {
