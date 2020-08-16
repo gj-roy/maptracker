@@ -319,7 +319,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                 builder.include(latLng)
             }
             val bounds = builder.build()
-            val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100)
+            val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 1)
             mGoogleMap?.animateCamera(cameraUpdate)
         }
     }
