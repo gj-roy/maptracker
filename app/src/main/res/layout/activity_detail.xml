@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ivMap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layoutInfor"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/ic_launcher_playstore" />
+
+    <LinearLayout
+        android:id="@+id/layoutInfor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:baselineAligned="false"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_medium">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvDistance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/no_0"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/txt_25"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/distance_km"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_medium"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvAvgSpeed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/no_0"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/txt_25"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/speed_km_h"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_medium"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTimer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/n_a"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_medium"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
