@@ -36,4 +36,5 @@
     <string name="distance_km">distance (km)</string>
     <string name="speed_km_h">avg speed (km/h)</string>
     <string name="n_a">N/A</string>
+    <string name="stop">Stop!</string>
 </resources>

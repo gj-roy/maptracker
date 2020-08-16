@@ -429,6 +429,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     }
 
     private fun handlePause() {
+        showShort(getString(R.string.stop))
         mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
         disposableTimer?.dispose()
     }
