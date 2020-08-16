@@ -454,9 +454,9 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
             val fileSaved = ImageUtil.saveBitmap(bitmap = bitmap, fileName = fileName)
             logD("handleStop isSaved ${fileSaved?.path}")
             if (fileSaved == null) {
-                //TODO save
-            } else {
                 showShort(getString(R.string.cannot_save_map))
+            } else {
+                //TODO save
             }
         }
     }
