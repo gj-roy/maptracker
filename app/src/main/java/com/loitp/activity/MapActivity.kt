@@ -95,7 +95,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
             handlePause()
         }
         btContinue.setSafeOnClickListener {
-//TODO
+            handleContinue()
         }
         btStop.setSafeOnClickListener {
 //TODO
@@ -382,18 +382,22 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         mSettingsClient?.let { settingsClient ->
             settingsClient.checkLocationSettings(mLocationSettingsRequest)
                     .addOnSuccessListener(this) {
-                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                            mFusedLocationClient?.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper())
-                            onChangeLocation()
-                        } else {
-                            showShort("Dont have permission ACCESS_FINE_LOCATION && ACCESS_COARSE_LOCATION")
-                        }
+                        requestLocation()
                     }
                     .addOnFailureListener(this) { e ->
                         showShort(e.toString())
                         onChangeLocation()
                     }
+        }
+    }
+
+    private fun requestLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mFusedLocationClient?.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper())
+            onChangeLocation()
+        } else {
+            showShort("Dont have permission ACCESS_FINE_LOCATION && ACCESS_COARSE_LOCATION")
         }
     }
 
@@ -436,5 +440,14 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         btPause.visibility = View.GONE
         btContinue.visibility = View.VISIBLE
         btStop.visibility = View.VISIBLE
+    }
+
+    private fun handleContinue() {
+        showShort(getString(R.string.continue_))
+        requestLocation()
+        startTimer()
+        btPause.visibility = View.VISIBLE
+        btContinue.visibility = View.GONE
+        btStop.visibility = View.GONE
     }
 }
