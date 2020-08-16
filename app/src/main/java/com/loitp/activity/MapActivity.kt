@@ -257,7 +257,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
             uiSettings.isZoomGesturesEnabled = true
             uiSettings.isCompassEnabled = true
 //            uiSettings.isMapToolbarEnabled = true
-            uiSettings.isMyLocationButtonEnabled = true
+            uiSettings.isMyLocationButtonEnabled = false
             uiSettings.isRotateGesturesEnabled = true
             uiSettings.isScrollGesturesEnabled = true
             uiSettings.isTiltGesturesEnabled = true
