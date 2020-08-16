@@ -1,6 +1,5 @@
 package com.loitp.model
 
-import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import com.loitp.util.LocUtil
 
@@ -11,7 +10,7 @@ data class Loc(
         var afterLatLng: LatLng? = null
 ) {
     //return in meter
-    fun getDistance(): Float? {
+    fun getDistanceM(): Float? {
         return LocUtil.getDistance(beforeLatLng = beforeLatLng, afterLatLng = afterLatLng)
     }
 
@@ -23,8 +22,8 @@ data class Loc(
     }
 
     //return speed m/s
-    fun getSpeed(): Float {
-        val s = getDistance() ?: 0F
+    fun getSpeedMs(): Float {
+        val s = getDistanceM() ?: 0F
         val t = getTimeInSecond().toFloat()
         val value = s / t
         if (value.isNaN()) {
@@ -33,4 +32,5 @@ data class Loc(
             return value
         }
     }
+
 }

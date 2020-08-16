@@ -211,7 +211,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                     afterLatLng = afterLatLng
             )
 
-            val log = "${loc.beforeTimestamp} : ${loc.beforeLatLng?.latitude} - ${loc.beforeLatLng?.longitude} ~ ${loc.afterLatLng?.latitude} - ${loc.afterLatLng?.longitude} -> ${loc.getDistance()}(m) - ${loc.getTimeInSecond()}(s) -> ${loc.getSpeed()}(m/s)"
+            val log = "${loc.beforeTimestamp} : ${loc.beforeLatLng?.latitude} - ${loc.beforeLatLng?.longitude} ~ ${loc.afterLatLng?.latitude} - ${loc.afterLatLng?.longitude} -> ${loc.getDistanceM()}(m) - ${loc.getTimeInSecond()}(s) -> ${loc.getSpeedMs()}(m/s)"
             logD("onChangeLocation $log")
 
             listLoc.add(element = loc)
@@ -241,12 +241,12 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                     //set avg speed
                     var sum = 0F
                     listLoc.forEach {
-                        sum += it.getSpeed()
+                        sum += it.getSpeedMs()
                     }
-                    val avgSpeed = sum.toDouble() / listLoc.size.toDouble()
-                    logD("avgSpeed $avgSpeed")
-                    val avgSpeedRoundMs = LMathUtil.roundDouble(value = avgSpeed, newScale = 3)
-                    tvAvgSpeed.text = "$avgSpeedRoundMs"
+                    val avgSpeedMs = sum.toDouble() / listLoc.size.toDouble()
+//                    logD("avgSpeed $avgSpeedMs")
+                    val avgSpeedRoundKhm = LMathUtil.roundDouble(value = avgSpeedMs * 3.6, newScale = 3)
+                    tvAvgSpeed.text = "$avgSpeedRoundKhm"
                 }
             }
         }
