@@ -227,9 +227,15 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                 //set distance
                 val firstLoc = listLoc.firstOrNull()
                 val lastLoc = listLoc.lastOrNull()
-                val distance = LocUtil.getDistance(firstLoc?.afterLatLng, lastLoc?.beforeLatLng)
-                val distanceInKm = distance?.div(1000F)
-                tvDistance.text = "$distanceInKm"
+                val distance = LocUtil.getDistance(firstLoc?.afterLatLng, lastLoc?.afterLatLng)
+
+                distance?.let {
+                    val distanceInKm = it.div(1000F).toDouble()
+                    val distanceInKmRound = LMathUtil.roundDouble(value = distanceInKm, newScale = 3)
+
+//                    logD("set distance " + firstLoc?.afterLatLng?.latitude + "-" + firstLoc?.afterLatLng?.longitude + " ~ " + lastLoc?.afterLatLng?.latitude + "-" + lastLoc?.afterLatLng?.longitude + " => " + distance+" => $distanceInKm => ${distanceInKmRound}")
+                    tvDistance.text = "$distanceInKmRound"
+                }
 
                 //set avg speed
                 tvAvgSpeed.text = "${loc.getSpeed()}"
