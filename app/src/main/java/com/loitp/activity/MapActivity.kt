@@ -34,7 +34,6 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.loitp.R
-import com.loitp.app.LApplication
 import com.loitp.model.Loc
 import com.views.setSafeOnClickListener
 import kotlinx.android.synthetic.main.activity_map.*
@@ -267,7 +266,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
             uiSettings.isZoomGesturesEnabled = true
             uiSettings.isCompassEnabled = true
 //            uiSettings.isMapToolbarEnabled = true
-            uiSettings.isMyLocationButtonEnabled = false
+            uiSettings.isMyLocationButtonEnabled = true
             uiSettings.isRotateGesturesEnabled = true
             uiSettings.isScrollGesturesEnabled = true
             uiSettings.isTiltGesturesEnabled = true
