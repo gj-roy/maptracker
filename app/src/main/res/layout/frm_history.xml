@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@color/whiteSmoke"
-    android:paddingBottom="@dimen/padding_medium">
+    android:background="@color/whiteSmoke">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btRecord"
+        android:layout_above="@+id/flBottom"
         android:layout_margin="@dimen/margin_medium"
         app:cardCornerRadius="@dimen/round_medium"
         app:cardElevation="@dimen/w_3"
@@ -29,7 +28,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btRecord"
+        android:layout_above="@+id/flBottom"
         android:layout_margin="@dimen/margin_medium"
         android:gravity="center"
         android:padding="@dimen/padding_medium"
@@ -37,13 +36,28 @@
         android:textColor="@color/gray"
         android:textSize="@dimen/text_medium" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btRecord"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/flBottom"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/margin_medium"
-        android:backgroundTint="@color/red"
-        android:contentDescription="@string/app_name" />
+        android:layout_alignParentBottom="true">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btRecord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/red"
+            android:contentDescription="@string/app_name" />
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/indicatorView"
+            style="@style/AVLoadingIndicatorView.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:indicatorColor="@color/red"
+            app:indicatorName="BallScaleMultipleIndicator" />
+    </FrameLayout>
+
 </RelativeLayout>
