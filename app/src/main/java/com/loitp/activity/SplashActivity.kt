@@ -26,7 +26,7 @@ class SplashActivity : BaseFontActivity() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        textViewVersion.text = "Version ${BuildConfig.VERSION_NAME}"
+        textViewVersion.text = "Version ${BuildConfig.VERSION_NAME}\n" + getString(R.string.copyright)
     }
 
     override fun onResume() {

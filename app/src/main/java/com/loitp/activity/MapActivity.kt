@@ -41,7 +41,6 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_map.*
-import kotlinx.android.synthetic.main.frm_history.*
 import java.util.concurrent.TimeUnit
 
 class MapActivity : BaseFontActivity(), OnMapReadyCallback,
@@ -67,8 +66,6 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     private val listLoc = ArrayList<Loc>()
     private var isShowDialogCheck = false
     private var disposableTimer: Disposable? = null
-
-    private var isPausing = false
     private var currentTimerSecond = 0L
 
     override fun setTag(): String? {
@@ -181,7 +178,6 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
 
     private fun onChangeLocation() {
 //        logD("onChangeLocation " + mCurrentLocation?.latitude + " - " + mCurrentLocation?.longitude)
-
         currentLocationMarker?.remove()
         mCurrentLocation?.let { location ->
 
@@ -193,7 +189,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
 
             val latRound: Double
             val lngRound: Double
-            //TODO
+            //TODO revert
             if (firstLocationMarker == null) {
                 latRound = location.latitude
                 lngRound = location.longitude
