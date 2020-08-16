@@ -431,7 +431,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     }
 
     private fun handlePause() {
-        showShort(getString(R.string.stop))
+//        showShort(getString(R.string.stop))
         mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
         disposableTimer?.dispose()
         btPause.visibility = View.GONE
@@ -440,7 +440,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     }
 
     private fun handleContinue() {
-        showShort(getString(R.string.continue_))
+//        showShort(getString(R.string.continue_))
         requestLocation()
         startTimer()
         btPause.visibility = View.VISIBLE
