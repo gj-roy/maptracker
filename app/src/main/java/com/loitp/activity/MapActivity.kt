@@ -33,8 +33,15 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.loitp.R
 import com.loitp.model.Loc
 import com.loitp.util.LocUtil
+import com.loitp.util.TimeUtil
 import com.views.setSafeOnClickListener
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.observers.DisposableObserver
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_map.*
+import java.util.concurrent.TimeUnit
 
 class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -58,6 +65,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     private var mCurrentLocation: Location? = null
     private val listLoc = ArrayList<Loc>()
     private var isShowDialogCheck = false
+    private var disposableTimer: Disposable? = null
 
     override fun setTag(): String? {
         return "loitpp" + javaClass.simpleName
@@ -331,6 +339,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         logD("onConnected")
         startLocationUpdates()
         btPause.visibility = View.VISIBLE
+        startTimer()
     }
 
     override fun onConnectionSuspended(i: Int) {
@@ -357,6 +366,32 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                         showShort(e.toString())
                         onChangeLocation()
                     }
+        }
+    }
+
+    private fun startTimer() {
+        disposableTimer?.dispose()
+        disposableTimer = Observable.interval(0, 1, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(
+                        object : DisposableObserver<Long?>() {
+                            override fun onNext(value: Long) {
+                                logD("startTimer onNext : value : $value")
+                                tvTimer.text = TimeUtil.getDurationString(s = value)
+                            }
+
+                            override fun onError(e: Throwable) {
+                                e.printStackTrace()
+                            }
+
+                            override fun onComplete() {
+                                logD("startTimer onComplete")
+                            }
+                        }
+                )
+        disposableTimer?.let {
+            compositeDisposable.add(it)
         }
     }
 }
