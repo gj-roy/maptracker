@@ -48,8 +48,8 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         GoogleApiClient.OnConnectionFailedListener {
 
     companion object {
-        private const val UPDATE_INTERVAL_IN_MILLISECONDS: Long = 8000
-        private const val FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS: Long = 5000
+        private const val UPDATE_INTERVAL_IN_MILLISECONDS: Long = 5000
+        private const val FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS: Long = 3000
         private const val ZOOM_TO = 11f
     }
 
@@ -66,6 +66,9 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     private val listLoc = ArrayList<Loc>()
     private var isShowDialogCheck = false
     private var disposableTimer: Disposable? = null
+
+    private var isPausing = false
+    private var currentTimerSecond = 0L
 
     override fun setTag(): String? {
         return "loitpp" + javaClass.simpleName
@@ -88,7 +91,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         initLocation()
 
         btPause.setSafeOnClickListener {
-//TODO
+            handlePause()
         }
         btContinue.setSafeOnClickListener {
 //TODO
@@ -402,7 +405,8 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                         object : DisposableObserver<Long?>() {
                             override fun onNext(value: Long) {
 //                                logD("startTimer onNext : value : $value")
-                                tvTimer.text = TimeUtil.getDurationString(s = value)
+                                currentTimerSecond++
+                                tvTimer.text = TimeUtil.getDurationString(s = currentTimerSecond)
                             }
 
                             override fun onError(e: Throwable) {
@@ -422,5 +426,10 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     override fun onDestroy() {
         mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
         super.onDestroy()
+    }
+
+    private fun handlePause() {
+        mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
+        disposableTimer?.dispose()
     }
 }
