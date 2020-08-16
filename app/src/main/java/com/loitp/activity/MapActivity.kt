@@ -51,6 +51,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     }
 
     private var googleApiClient: GoogleApiClient? = null
+    private var firstLocationMarker: Marker? = null
     private var currentLocationMarker: Marker? = null
     private var mGoogleMap: GoogleMap? = null
     private var mFusedLocationClient: FusedLocationProviderClient? = null
@@ -197,42 +198,83 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                     beforeLatLng = beforeLatLng,
                     afterLatLng = afterLatLng
             )
-            listLoc.add(element = loc)
-            var log = ""
-            listLoc.forEach {
-                log += "\n\n\n${it.beforeTimestamp} : ${it.beforeLatLng?.latitude} - ${it.beforeLatLng?.longitude} ~ ${it.afterLatLng?.latitude} - ${it.afterLatLng?.longitude} -> ${it.getDistance()}(m) - ${it.getTimeInSecond()}(s) -> ${it.getSpeed()}(m/s)"
-            }
+
+            val log = "${loc.beforeTimestamp} : ${loc.beforeLatLng?.latitude} - ${loc.beforeLatLng?.longitude} ~ ${loc.afterLatLng?.latitude} - ${loc.afterLatLng?.longitude} -> ${loc.getDistance()}(m) - ${loc.getTimeInSecond()}(s) -> ${loc.getSpeed()}(m/s)"
             logD("onChangeLocation $log")
 
-            val markerOptions = MarkerOptions()
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-            markerOptions.position(latLng)
+            listLoc.add(element = loc)
 
-            val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            val providerList = locationManager.allProviders
+            if (firstLocationMarker == null) {
+                addFirstLocationMaker(latLng = latLng, location = location)
+            } else {
+                updateCurrentLocationMaker(latLng = latLng, location = location)
+            }
+        }
+    }
 
-            if (providerList.size > 0) {
-                val longitude = location.longitude
-                val latitude = location.latitude
-                val geoCoder = Geocoder(applicationContext, Locale.getDefault())
-                try {
-                    val listAddresses = geoCoder.getFromLocation(latitude, longitude, 1)
+    private fun addFirstLocationMaker(latLng: LatLng, location: Location) {
+        logD("addFirstLocationMaker")
+        val firstMarkerOptions = MarkerOptions()
+        firstMarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+        firstMarkerOptions.position(latLng)
+
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val providerList = locationManager.allProviders
+
+        if (providerList.size > 0) {
+            val longitude = location.longitude
+            val latitude = location.latitude
+            val geoCoder = Geocoder(applicationContext, Locale.getDefault())
+            try {
+                val listAddresses = geoCoder.getFromLocation(latitude, longitude, 1)
 //                    logD("listAddresses " + LApplication.gson.toJson(listAddresses))
-                    if (listAddresses.isNullOrEmpty()) {
-                        //do nothing
-                    } else {
-                        markerOptions.title(listAddresses[0].getAddressLine(0))
-                    }
-                } catch (e: IOException) {
-                    e.printStackTrace()
+                if (listAddresses.isNullOrEmpty()) {
+                    //do nothing
+                } else {
+                    firstMarkerOptions.title(listAddresses[0].getAddressLine(0))
                 }
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
+        }
 
-            currentLocationMarker = mGoogleMap?.addMarker(markerOptions)
-            mGoogleMap?.let {
-                it.moveCamera(CameraUpdateFactory.newLatLng(latLng))
-                it.animateCamera(CameraUpdateFactory.zoomTo(11f))
+        firstLocationMarker = mGoogleMap?.addMarker(firstMarkerOptions)
+        mGoogleMap?.let {
+            it.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+            it.animateCamera(CameraUpdateFactory.zoomTo(11f))
+        }
+    }
+
+    private fun updateCurrentLocationMaker(latLng: LatLng, location: Location) {
+        logD("updateCurrentLocationMaker")
+        val markerOptions = MarkerOptions()
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+        markerOptions.position(latLng)
+
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val providerList = locationManager.allProviders
+
+        if (providerList.size > 0) {
+            val longitude = location.longitude
+            val latitude = location.latitude
+            val geoCoder = Geocoder(applicationContext, Locale.getDefault())
+            try {
+                val listAddresses = geoCoder.getFromLocation(latitude, longitude, 1)
+//                    logD("listAddresses " + LApplication.gson.toJson(listAddresses))
+                if (listAddresses.isNullOrEmpty()) {
+                    //do nothing
+                } else {
+                    markerOptions.title(listAddresses[0].getAddressLine(0))
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
+        }
+
+        currentLocationMarker = mGoogleMap?.addMarker(markerOptions)
+        mGoogleMap?.let {
+            it.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+            it.animateCamera(CameraUpdateFactory.zoomTo(11f))
         }
     }
 
