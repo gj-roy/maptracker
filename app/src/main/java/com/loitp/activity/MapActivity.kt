@@ -450,10 +450,11 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
 
     private fun handleStop() {
         mGoogleMap?.snapshot { bitmap ->
-            val fileSaved = ImageUtil.saveBitmap(bitmap, "${System.currentTimeMillis()}.png")
+            val fileName = "${System.currentTimeMillis()}.png"
+            val fileSaved = ImageUtil.saveBitmap(bitmap = bitmap, fileName = fileName)
             logD("handleStop isSaved ${fileSaved?.path}")
             if (fileSaved == null) {
-                //TODO
+                //TODO save
             } else {
                 showShort(getString(R.string.cannot_save_map))
             }
