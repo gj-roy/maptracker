@@ -35,6 +35,7 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.loitp.R
 import com.loitp.model.Loc
+import com.loitp.util.LocUtil
 import com.views.setSafeOnClickListener
 import kotlinx.android.synthetic.main.activity_map.*
 import java.io.IOException
@@ -213,32 +214,9 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     }
 
     private fun addFirstLocationMaker(latLng: LatLng, location: Location) {
-        logD("addFirstLocationMaker")
-        val firstMarkerOptions = MarkerOptions()
-        firstMarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-        firstMarkerOptions.position(latLng)
-
-        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val providerList = locationManager.allProviders
-
-        if (providerList.size > 0) {
-            val longitude = location.longitude
-            val latitude = location.latitude
-            val geoCoder = Geocoder(applicationContext, Locale.getDefault())
-            try {
-                val listAddresses = geoCoder.getFromLocation(latitude, longitude, 1)
-//                    logD("listAddresses " + LApplication.gson.toJson(listAddresses))
-                if (listAddresses.isNullOrEmpty()) {
-                    //do nothing
-                } else {
-                    firstMarkerOptions.title(listAddresses[0].getAddressLine(0))
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-
-        firstLocationMarker = mGoogleMap?.addMarker(firstMarkerOptions)
+//        logD("addFirstLocationMaker")
+        val markerOptions = LocUtil.getMaker(context = activity, latLng = latLng, location = location, color = BitmapDescriptorFactory.HUE_RED)
+        firstLocationMarker = mGoogleMap?.addMarker(markerOptions)
         mGoogleMap?.let {
             it.moveCamera(CameraUpdateFactory.newLatLng(latLng))
             it.animateCamera(CameraUpdateFactory.zoomTo(11f))
@@ -246,31 +224,8 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     }
 
     private fun updateCurrentLocationMaker(latLng: LatLng, location: Location) {
-        logD("updateCurrentLocationMaker")
-        val markerOptions = MarkerOptions()
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
-        markerOptions.position(latLng)
-
-        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val providerList = locationManager.allProviders
-
-        if (providerList.size > 0) {
-            val longitude = location.longitude
-            val latitude = location.latitude
-            val geoCoder = Geocoder(applicationContext, Locale.getDefault())
-            try {
-                val listAddresses = geoCoder.getFromLocation(latitude, longitude, 1)
-//                    logD("listAddresses " + LApplication.gson.toJson(listAddresses))
-                if (listAddresses.isNullOrEmpty()) {
-                    //do nothing
-                } else {
-                    markerOptions.title(listAddresses[0].getAddressLine(0))
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-
+//        logD("updateCurrentLocationMaker")
+        val markerOptions = LocUtil.getMaker(context = activity, latLng = latLng, location = location, color = BitmapDescriptorFactory.HUE_CYAN)
         currentLocationMarker = mGoogleMap?.addMarker(markerOptions)
         mGoogleMap?.let {
             it.moveCamera(CameraUpdateFactory.newLatLng(latLng))
