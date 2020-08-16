@@ -5,6 +5,7 @@
     <string name="link_gg_drive"><![CDATA[https://drive.google.com/uc?export=download&id=1femuL17MUTz7t0yqUkMWB5yCea1W6kqI]]></string><!--no need to edit this-->
     <string name="link_cover"><![CDATA[https://live.staticflickr.com/4607/25921024848_3961c17c66_b.jpg]]></string>
 
+    <string name="google_maps_key">AIzaSyBIPIyBbvDxUHPyEi9Qy-phu9VuOzy7iUI</string>
     <string name="str_b">ca-app-pub-3165963943681013/2660251425</string>
     <string name="str_f">ca-app-pub-3165963943681013/7724875845</string>
     <string name="str_reward">ca-app-pub-3165963943681013/4049354711</string>
