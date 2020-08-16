@@ -293,7 +293,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
             uiSettings.isZoomGesturesEnabled = true
             uiSettings.isCompassEnabled = true
 //            uiSettings.isMapToolbarEnabled = true
-            uiSettings.isMyLocationButtonEnabled = true
+            uiSettings.isMyLocationButtonEnabled = false
             uiSettings.isRotateGesturesEnabled = true
             uiSettings.isScrollGesturesEnabled = true
             uiSettings.isTiltGesturesEnabled = true
@@ -330,13 +330,13 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                 if (googleApiClient == null) {
                     buildGoogleApiClient()
                 }
-                mGoogleMap?.isMyLocationEnabled = true
+                mGoogleMap?.isMyLocationEnabled = false//hide current position
             }
         } else {
             if (googleApiClient == null) {
                 buildGoogleApiClient()
             }
-            mGoogleMap?.isMyLocationEnabled = true
+            mGoogleMap?.isMyLocationEnabled = false//hide current position
         }
     }
 
