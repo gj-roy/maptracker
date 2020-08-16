@@ -8,9 +8,11 @@ import com.core.base.BaseFragment
 import com.core.common.Constants
 import com.core.utilities.LActivityUtil
 import com.loitp.R
+import com.loitp.activity.DetailActivity
 import com.loitp.activity.MapActivity
 import com.loitp.adapter.HistoryAdapter
 import com.loitp.model.History
+import com.loitp.util.KeyConstant
 import com.views.setSafeOnClickListener
 import kotlinx.android.synthetic.main.frm_history.*
 import java.util.*
@@ -27,7 +29,12 @@ class HistoryFragment : BaseFragment() {
                 moviesList = listHistory,
                 callback = object : HistoryAdapter.Callback {
                     override fun onClick(history: History, position: Int) {
-                        //TODO
+                        activity?.let {
+                            val intent = Intent(it, DetailActivity::class.java)
+                            intent.putExtra(KeyConstant.KEY_HISTORY, history)
+                            startActivity(intent)
+                            LActivityUtil.tranIn(it)
+                        }
                     }
 
                     override fun onLoadMore() {

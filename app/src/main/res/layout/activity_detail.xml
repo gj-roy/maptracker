@@ -10,7 +10,6 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/layoutInfor"
         android:contentDescription="@string/app_name"
-        android:scaleType="centerCrop"
         tools:src="@drawable/ic_launcher_playstore" />
 
     <LinearLayout
