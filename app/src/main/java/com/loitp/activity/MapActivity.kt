@@ -237,14 +237,23 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                     tvDistance.text = "$distanceInKmRound"
                 }
 
-                //set avg speed
-                tvAvgSpeed.text = "${loc.getSpeed()}"
+                if (listLoc.isNotEmpty()) {
+                    //set avg speed
+                    var sum = 0F
+                    listLoc.forEach {
+                        sum += it.getSpeed()
+                    }
+                    val avgSpeed = sum.toDouble() / listLoc.size.toDouble()
+                    logD("avgSpeed $avgSpeed")
+                    val avgSpeedRoundMs = LMathUtil.roundDouble(value = avgSpeed, newScale = 3)
+                    tvAvgSpeed.text = "$avgSpeedRoundMs"
+                }
             }
         }
     }
 
     private fun addFirstLocationMaker(latLng: LatLng, location: Location) {
-        logD("addFirstLocationMaker")
+//        logD("addFirstLocationMaker")
         val markerOptions = LocUtil.getMaker(context = activity, latLng = latLng, location = location, color = BitmapDescriptorFactory.HUE_RED)
         firstLocationMarker = mGoogleMap?.addMarker(markerOptions)
         mGoogleMap?.let {
@@ -254,7 +263,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     }
 
     private fun updateCurrentLocationMaker(latLng: LatLng, location: Location) {
-        logD("updateCurrentLocationMaker")
+//        logD("updateCurrentLocationMaker")
         val markerOptions = LocUtil.getMaker(context = activity, latLng = latLng, location = location, color = BitmapDescriptorFactory.HUE_CYAN)
         currentLocationMarker = mGoogleMap?.addMarker(markerOptions)
         mGoogleMap?.let {
@@ -310,7 +319,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         }
         if (listLatLng.isNotEmpty()) {
             val polyOptions = PolylineOptions()
-            polyOptions.color(Color.CYAN)
+            polyOptions.color(Color.GRAY)
             polyOptions.width(25f)
             polyOptions.addAll(listLatLng)
             mGoogleMap?.addPolyline(polyOptions)

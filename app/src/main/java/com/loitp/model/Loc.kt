@@ -26,6 +26,11 @@ data class Loc(
     fun getSpeed(): Float {
         val s = getDistance() ?: 0F
         val t = getTimeInSecond().toFloat()
-        return s / t
+        val value = s / t
+        if (value.isNaN()) {
+            return 0F
+        } else {
+            return value
+        }
     }
 }
