@@ -41,6 +41,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_map.*
+import kotlinx.android.synthetic.main.frm_history.*
 import java.util.concurrent.TimeUnit
 
 class MapActivity : BaseFontActivity(), OnMapReadyCallback,
@@ -432,5 +433,8 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         showShort(getString(R.string.stop))
         mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
         disposableTimer?.dispose()
+        btPause.visibility = View.GONE
+        btContinue.visibility = View.VISIBLE
+        btStop.visibility = View.VISIBLE
     }
 }
