@@ -194,8 +194,8 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                 latRound = location.latitude
                 lngRound = location.longitude
             } else {
-                latRound = location.latitude + 0.00125 * listLoc.size
-                lngRound = location.longitude + 0.00125 * listLoc.size
+                latRound = location.latitude + 0.000125 * listLoc.size
+                lngRound = location.longitude + 0.000125 * listLoc.size
             }
 
             val latLng = LatLng(latRound, lngRound)
@@ -402,5 +402,10 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         disposableTimer?.let {
             compositeDisposable.add(it)
         }
+    }
+
+    override fun onDestroy() {
+        mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
+        super.onDestroy()
     }
 }
