@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
+import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.core.base.BaseFontActivity
@@ -85,6 +86,15 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
 //        btRouterAnim.setSafeOnClickListener {
 //            drawRouterAnim()
 //        }
+        btPause.setSafeOnClickListener {
+
+        }
+        btContinue.setSafeOnClickListener {
+
+        }
+        btStop.setSafeOnClickListener {
+
+        }
     }
 
     override fun onResume() {
@@ -353,6 +363,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     override fun onConnected(bundle: Bundle?) {
         logD("onConnected")
         startLocationUpdates()
+        btPause.visibility = View.VISIBLE
     }
 
     override fun onConnectionSuspended(i: Int) {
