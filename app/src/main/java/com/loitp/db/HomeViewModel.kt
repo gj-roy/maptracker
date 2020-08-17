@@ -1,155 +1,149 @@
 package com.loitp.db
 
 import android.app.Application
-import com.loitp.db.db.FNBDatabase
+import com.loitp.db.db.AppDatabase
 import com.loitp.model.ActionData
 import com.loitp.model.ActionLiveData
 import com.loitp.model.BaseViewModel
-import com.loitp.model.FloorPlan
+import com.loitp.model.History
 import kotlinx.coroutines.launch
 
 class HomeViewModel(application: Application) : BaseViewModel(application) {
     private val TAG = "loitpp" + javaClass.simpleName
-    val saveFloorPlanActionLiveData: ActionLiveData<ActionData<ArrayList<FloorPlan>>> = ActionLiveData()
-    val getFloorPlanActionLiveData: ActionLiveData<ActionData<List<FloorPlan>>> = ActionLiveData()
-    val getByIndexFloorPlanActionLiveData: ActionLiveData<ActionData<List<FloorPlan>>> = ActionLiveData()
-    val deleteFloorPlanActionLiveData: ActionLiveData<ActionData<FloorPlan>> = ActionLiveData()
-    val updateFloorPlanActionLiveData: ActionLiveData<ActionData<FloorPlan>> = ActionLiveData()
-    val deleteAllFloorPlanActionLiveData: ActionLiveData<ActionData<Boolean>> = ActionLiveData()
-    val insertFloorPlanActionLiveData: ActionLiveData<ActionData<FloorPlan>> = ActionLiveData()
-    val findFloorPlanActionLiveData: ActionLiveData<ActionData<FloorPlan>> = ActionLiveData()
+    val saveHistoryActionLiveData: ActionLiveData<ActionData<ArrayList<History>>> = ActionLiveData()
+    val getHistoryActionLiveData: ActionLiveData<ActionData<List<History>>> = ActionLiveData()
+    val getByIndexHistoryActionLiveData: ActionLiveData<ActionData<List<History>>> = ActionLiveData()
+    val deleteHistoryActionLiveData: ActionLiveData<ActionData<History>> = ActionLiveData()
+    val updateHistoryActionLiveData: ActionLiveData<ActionData<History>> = ActionLiveData()
+    val deleteAllHistoryActionLiveData: ActionLiveData<ActionData<Boolean>> = ActionLiveData()
+    val insertHistoryActionLiveData: ActionLiveData<ActionData<History>> = ActionLiveData()
+    val findHistoryActionLiveData: ActionLiveData<ActionData<History>> = ActionLiveData()
 
-    private fun genFloorPlan(id: String, name: String): FloorPlan {
-        val floorPlan = FloorPlan()
+    private fun genHistory(id: String, name: String): History {
+        val history = History()
 
-        floorPlan.id = id
-        floorPlan.name = name
+        history.id = id
+        history.fileName = name
 
-        return floorPlan
+        return history
     }
 
-    private fun genListFloorPlan(fromId: Int, toId: Int): ArrayList<FloorPlan> {
-        val listFloorPlan = ArrayList<FloorPlan>()
+    private fun genListHistory(fromId: Int, toId: Int): ArrayList<History> {
+        val listHistory = ArrayList<History>()
         for (i in fromId until toId) {
-            listFloorPlan.add(genFloorPlan(id = "$i", name = "Name $i"))
+            listHistory.add(genHistory(id = "$i", name = "Name $i"))
         }
-        return listFloorPlan
+        return listHistory
     }
 
     fun saveListFrom0To10() {
-        saveFloorPlanActionLiveData.set(ActionData(isDoing = true))
+        saveHistoryActionLiveData.set(ActionData(isDoing = true))
 
         ioScope.launch {
 
-            val listFloorPlan = genListFloorPlan(fromId = 0, toId = 10)
-            if (listFloorPlan.isNotEmpty()) {
-                FNBDatabase.instance?.floorPlanDao()?.insertListFloorPlanConflict(listFloorPlan)
+            val listHistory = genListHistory(fromId = 0, toId = 10)
+            if (listHistory.isNotEmpty()) {
+                AppDatabase.instance?.historyDao()?.insertListHistoryConflict(listHistory)
 
-                saveFloorPlanActionLiveData.post(
+                saveHistoryActionLiveData.post(
                         ActionData(
                                 isDoing = false,
                                 isSuccess = true,
-                                data = listFloorPlan
+                                data = listHistory
                         )
                 )
-            } else {
-                //handle error
-                //floorPlanActionLiveData.postAction()
             }
         }
     }
 
     fun saveListFrom10To20() {
-        saveFloorPlanActionLiveData.set(ActionData(isDoing = true))
+        saveHistoryActionLiveData.set(ActionData(isDoing = true))
 
         ioScope.launch {
 
-            val listFloorPlan = genListFloorPlan(fromId = 10, toId = 20)
-            if (listFloorPlan.isNotEmpty()) {
-                FNBDatabase.instance?.floorPlanDao()?.insertListFloorPlanConflict(listFloorPlan)
+            val listHistory = genListHistory(fromId = 10, toId = 20)
+            if (listHistory.isNotEmpty()) {
+                AppDatabase.instance?.historyDao()?.insertListHistoryConflict(listHistory)
 
-                saveFloorPlanActionLiveData.post(
+                saveHistoryActionLiveData.post(
                         ActionData(
                                 isDoing = false,
                                 isSuccess = true,
-                                data = listFloorPlan
+                                data = listHistory
                         )
                 )
-            } else {
-                //handle error
-                //floorPlanActionLiveData.postAction()
             }
         }
     }
 
     fun getList() {
-        getFloorPlanActionLiveData.set(ActionData(isDoing = true))
+        getHistoryActionLiveData.set(ActionData(isDoing = true))
         ioScope.launch {
-            val listFloorPlan = FNBDatabase.instance?.floorPlanDao()?.getAllFloorPlan()
-            getFloorPlanActionLiveData.post(
+            val listHistory = AppDatabase.instance?.historyDao()?.getAllHistory()
+            getHistoryActionLiveData.post(
                     ActionData(
                             isDoing = false,
                             isSuccess = true,
-                            data = listFloorPlan
+                            data = listHistory
                     )
             )
         }
     }
 
     fun getListByIndex(fromIndex: Int, toIndex: Int) {
-        getByIndexFloorPlanActionLiveData.set(ActionData(isDoing = true))
+        getByIndexHistoryActionLiveData.set(ActionData(isDoing = true))
         ioScope.launch {
             val offset = toIndex - fromIndex + 1
-            val listFloorPlan = FNBDatabase.instance?.floorPlanDao()?.getListFloorPlanByIndex(fromIndex = fromIndex, offset = offset)
-            getByIndexFloorPlanActionLiveData.post(
+            val listHistory = AppDatabase.instance?.historyDao()?.getListHistoryByIndex(fromIndex = fromIndex, offset = offset)
+            getByIndexHistoryActionLiveData.post(
                     ActionData(
                             isDoing = false,
                             isSuccess = true,
-                            data = listFloorPlan
+                            data = listHistory
                     )
             )
         }
     }
 
-    fun deleteFloorPlan(floorPlan: FloorPlan) {
+    fun deleteHistory(history: History) {
         ioScope.launch {
-            deleteFloorPlanActionLiveData.post(ActionData(isDoing = true))
-            FNBDatabase.instance?.floorPlanDao()?.delete(floorPlan)
-            deleteFloorPlanActionLiveData.post(ActionData(isDoing = false, data = floorPlan))
+            deleteHistoryActionLiveData.post(ActionData(isDoing = true))
+            AppDatabase.instance?.historyDao()?.delete(history)
+            deleteHistoryActionLiveData.post(ActionData(isDoing = false, data = history))
         }
     }
 
-    fun updateFloorPlan(floorPlan: FloorPlan) {
+    fun updateHistory(history: History) {
         ioScope.launch {
-            updateFloorPlanActionLiveData.post(ActionData(isDoing = true))
-            FNBDatabase.instance?.floorPlanDao()?.update(floorPlan)
-            updateFloorPlanActionLiveData.post(ActionData(isDoing = false, data = floorPlan))
+            updateHistoryActionLiveData.post(ActionData(isDoing = true))
+            AppDatabase.instance?.historyDao()?.update(history)
+            updateHistoryActionLiveData.post(ActionData(isDoing = false, data = history))
         }
     }
 
     fun deleteAll() {
         ioScope.launch {
-            deleteAllFloorPlanActionLiveData.post(ActionData(isDoing = true))
-            FNBDatabase.instance?.floorPlanDao()?.deleteAll()
-            deleteAllFloorPlanActionLiveData.post(ActionData(isDoing = false, data = true))
+            deleteAllHistoryActionLiveData.post(ActionData(isDoing = true))
+            AppDatabase.instance?.historyDao()?.deleteAll()
+            deleteAllHistoryActionLiveData.post(ActionData(isDoing = false, data = true))
         }
     }
 
-    fun insertFloorPlan() {
+    fun insertHistory() {
         ioScope.launch {
-            insertFloorPlanActionLiveData.post(ActionData(isDoing = true))
+            insertHistoryActionLiveData.post(ActionData(isDoing = true))
             val id = System.currentTimeMillis()
-            val floorPlan = genFloorPlan(id = id.toString(), name = "Name $id")
-            FNBDatabase.instance?.floorPlanDao()?.insert(floorPlan)
-            insertFloorPlanActionLiveData.post(ActionData(isDoing = false, data = floorPlan))
+            val history = genHistory(id = id.toString(), name = "Name $id")
+            AppDatabase.instance?.historyDao()?.insert(history)
+            insertHistoryActionLiveData.post(ActionData(isDoing = false, data = history))
         }
     }
 
     fun findId(id: String) {
         ioScope.launch {
-            findFloorPlanActionLiveData.post(ActionData(isDoing = true))
-            val floorPlan = FNBDatabase.instance?.floorPlanDao()?.find(id = id)
-            findFloorPlanActionLiveData.post(ActionData(isDoing = false, data = floorPlan))
+            findHistoryActionLiveData.post(ActionData(isDoing = true))
+            val history = AppDatabase.instance?.historyDao()?.find(id = id)
+            findHistoryActionLiveData.post(ActionData(isDoing = false, data = history))
         }
     }
 }

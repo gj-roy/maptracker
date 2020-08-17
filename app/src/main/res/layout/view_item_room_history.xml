@@ -9,7 +9,7 @@
     android:padding="@dimen/padding_medium">
 
     <TextView
-        android:id="@+id/tvFloorPlan"
+        android:id="@+id/tvHistory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"

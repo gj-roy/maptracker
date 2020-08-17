@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.core.base.BaseFontActivity
 import com.loitp.R
 import com.loitp.app.LApplication
-import com.loitp.model.FloorPlan
+import com.loitp.model.History
 import com.views.setSafeOnClickListener
 import kotlinx.android.synthetic.main.activity_database_room.*
 
 class RoomActivity : BaseFontActivity() {
-    private var floorPlanAdapter: FloorPlanAdapter? = null
+    private var roomHistoryAdapter: RoomHistoryAdapter? = null
     private var homeViewModel: HomeViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +28,7 @@ class RoomActivity : BaseFontActivity() {
     }
 
     override fun setTag(): String? {
-        return "loitpp" + javaClass.simpleName
+        return  javaClass.simpleName
     }
 
     override fun setLayoutResourceId(): Int {
@@ -36,8 +36,8 @@ class RoomActivity : BaseFontActivity() {
     }
 
     private fun setupView() {
-        floorPlanAdapter = FloorPlanAdapter()
-        floorPlanAdapter?.apply {
+        roomHistoryAdapter = RoomHistoryAdapter()
+        roomHistoryAdapter?.apply {
             onClickRootView = {
                 logD(LApplication.gson.toJson(it))
                 showShort(LApplication.gson.toJson(it))
@@ -49,9 +49,9 @@ class RoomActivity : BaseFontActivity() {
                 handleDelete(it)
             }
         }
-        rvFloorPlan.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
-        rvFloorPlan.layoutManager = LinearLayoutManager(activity)
-        rvFloorPlan.adapter = floorPlanAdapter
+        rv.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
+        rv.layoutManager = LinearLayoutManager(activity)
+        rv.adapter = roomHistoryAdapter
 
         btInsert.setSafeOnClickListener {
             handleInsert()
@@ -79,7 +79,7 @@ class RoomActivity : BaseFontActivity() {
     private fun setupViewModels() {
         homeViewModel = getViewModel(HomeViewModel::class.java)
         homeViewModel?.let { hvm ->
-            hvm.saveFloorPlanActionLiveData.observe(this, Observer { actionData ->
+            hvm.saveHistoryActionLiveData.observe(this, Observer { actionData ->
                 actionData.isDoing?.let {
                     if (it) {
                         progressBar.visibility = View.VISIBLE
@@ -88,12 +88,12 @@ class RoomActivity : BaseFontActivity() {
                     }
                 }
                 actionData.data?.let {
-                    logD("floorPlanActionLiveData observe " + LApplication.gson.toJson(it))
+                    logD("saveHistoryActionLiveData observe " + LApplication.gson.toJson(it))
                     handleGetList()
                 }
             })
 
-            hvm.getFloorPlanActionLiveData.observe(this, Observer { actionData ->
+            hvm.getHistoryActionLiveData.observe(this, Observer { actionData ->
                 actionData.isDoing?.let {
                     if (it) {
                         progressBar.visibility = View.VISIBLE
@@ -102,12 +102,12 @@ class RoomActivity : BaseFontActivity() {
                     }
                 }
                 actionData.data?.let {
-                    logD("getFloorPlanActionLiveData observe " + LApplication.gson.toJson(it))
-                    floorPlanAdapter?.setListFloorPlan(it)
+                    logD("getHistoryActionLiveData observe " + LApplication.gson.toJson(it))
+                    roomHistoryAdapter?.setListHistory(it)
                 }
             })
 
-            hvm.getByIndexFloorPlanActionLiveData.observe(this, Observer { actionData ->
+            hvm.getByIndexHistoryActionLiveData.observe(this, Observer { actionData ->
                 actionData.isDoing?.let {
                     if (it) {
                         progressBar.visibility = View.VISIBLE
@@ -116,25 +116,12 @@ class RoomActivity : BaseFontActivity() {
                     }
                 }
                 actionData.data?.let {
-                    logD("getByIndexFloorPlanActionLiveData observe " + LApplication.gson.toJson(it))
-                    showShort("getByIndexFloorPlanActionLiveData:\n" + LApplication.gson.toJson(it))
+                    logD("getByIndexHistoryActionLiveData observe " + LApplication.gson.toJson(it))
+                    showShort("getByIndexHistoryActionLiveData:\n" + LApplication.gson.toJson(it))
                 }
             })
 
-            hvm.deleteFloorPlanActionLiveData.observe(this, Observer { actionData ->
-                actionData.isDoing?.let {
-                    if (it) {
-                        progressBar.visibility = View.VISIBLE
-                    } else {
-                        progressBar.visibility = View.GONE
-                    }
-                }
-                actionData.data?.let {
-                    handleGetList()
-                }
-            })
-
-            hvm.updateFloorPlanActionLiveData.observe(this, Observer { actionData ->
+            hvm.deleteHistoryActionLiveData.observe(this, Observer { actionData ->
                 actionData.isDoing?.let {
                     if (it) {
                         progressBar.visibility = View.VISIBLE
@@ -147,7 +134,20 @@ class RoomActivity : BaseFontActivity() {
                 }
             })
 
-            hvm.deleteAllFloorPlanActionLiveData.observe(this, Observer { actionData ->
+            hvm.updateHistoryActionLiveData.observe(this, Observer { actionData ->
+                actionData.isDoing?.let {
+                    if (it) {
+                        progressBar.visibility = View.VISIBLE
+                    } else {
+                        progressBar.visibility = View.GONE
+                    }
+                }
+                actionData.data?.let {
+                    handleGetList()
+                }
+            })
+
+            hvm.deleteAllHistoryActionLiveData.observe(this, Observer { actionData ->
                 actionData.isDoing?.let {
                     if (it) {
                         progressBar.visibility = View.VISIBLE
@@ -162,7 +162,7 @@ class RoomActivity : BaseFontActivity() {
                 }
             })
 
-            hvm.insertFloorPlanActionLiveData.observe(this, Observer { actionData ->
+            hvm.insertHistoryActionLiveData.observe(this, Observer { actionData ->
                 actionData.isDoing?.let {
                     if (it) {
                         progressBar.visibility = View.VISIBLE
@@ -175,7 +175,7 @@ class RoomActivity : BaseFontActivity() {
                 }
             })
 
-            hvm.findFloorPlanActionLiveData.observe(this, Observer { actionData ->
+            hvm.findHistoryActionLiveData.observe(this, Observer { actionData ->
                 val isDoing = actionData.isDoing
                 isDoing?.let {
                     if (it) {
@@ -186,14 +186,14 @@ class RoomActivity : BaseFontActivity() {
                 }
 //                val data = actionData.data
                 if (isDoing == false) {
-                    showShort("findFloorPlanActionLiveData observe " + LApplication.gson.toJson(actionData.data))
+                    showShort("findHistoryActionLiveData observe " + LApplication.gson.toJson(actionData.data))
                 }
             })
         }
     }
 
     private fun handleInsert() {
-        homeViewModel?.insertFloorPlan()
+        homeViewModel?.insertHistory()
     }
 
     private fun handleSaveListFrom0To10() {
@@ -212,13 +212,13 @@ class RoomActivity : BaseFontActivity() {
         homeViewModel?.getListByIndex(fromIndex = 3, toIndex = 5)
     }
 
-    private fun handleDelete(floorPlan: FloorPlan) {
-        homeViewModel?.deleteFloorPlan(floorPlan)
+    private fun handleDelete(history: History) {
+        homeViewModel?.deleteHistory(history)
     }
 
-    private fun handleUpdate(floorPlan: FloorPlan) {
-        floorPlan.name = "Update Name " + System.currentTimeMillis()
-        homeViewModel?.updateFloorPlan(floorPlan)
+    private fun handleUpdate(history: History) {
+        history.fileName = "Update Name " + System.currentTimeMillis()
+        homeViewModel?.updateHistory(history)
     }
 
     private fun handleDeleteAll() {
