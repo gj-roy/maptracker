@@ -1,10 +1,9 @@
-package com.loitp.db
+package com.loitp.viewmodel
 
 import android.app.Application
-import com.loitp.db.db.AppDatabase
+import com.loitp.db.AppDatabase
 import com.loitp.model.ActionData
 import com.loitp.model.ActionLiveData
-import com.loitp.model.BaseViewModel
 import com.loitp.model.History
 import kotlinx.coroutines.launch
 

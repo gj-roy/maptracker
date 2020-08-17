@@ -1,4 +1,4 @@
-package com.loitp.db
+package com.loitp.activity
 
 import android.os.Bundle
 import android.view.View
@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.core.base.BaseFontActivity
 import com.loitp.R
+import com.loitp.adapter.RoomHistoryAdapter
 import com.loitp.app.LApplication
 import com.loitp.model.History
+import com.loitp.viewmodel.HomeViewModel
 import com.views.setSafeOnClickListener
 import kotlinx.android.synthetic.main.activity_database_room.*
 
-class RoomActivity : BaseFontActivity() {
+class TestRoomActivity : BaseFontActivity() {
     private var roomHistoryAdapter: RoomHistoryAdapter? = null
     private var homeViewModel: HomeViewModel? = null
 

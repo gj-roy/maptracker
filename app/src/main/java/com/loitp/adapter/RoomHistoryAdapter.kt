@@ -1,4 +1,4 @@
-package com.loitp.db
+package com.loitp.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

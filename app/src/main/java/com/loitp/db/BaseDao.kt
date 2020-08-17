@@ -1,4 +1,4 @@
-package com.loitp.db.db
+package com.loitp.db
 
 import androidx.room.Delete
 import androidx.room.Insert

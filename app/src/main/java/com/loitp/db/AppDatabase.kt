@@ -1,4 +1,4 @@
-package com.loitp.db.db
+package com.loitp.db
 
 import android.content.Context
 import androidx.room.Database

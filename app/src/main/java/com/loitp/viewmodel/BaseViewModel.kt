@@ -1,4 +1,4 @@
-package com.loitp.model
+package com.loitp.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -6,6 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.core.utilities.LLog
 import com.loitp.enumtype.RequestStatus
+import com.loitp.model.ActionData
+import com.loitp.model.ApiResponse
+import com.loitp.model.ErrorResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

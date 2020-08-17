@@ -18,7 +18,6 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.loitp.BuildConfig
 import com.loitp.R
-import com.loitp.db.RoomActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : BaseFontActivity() {
@@ -83,7 +82,7 @@ class SplashActivity : BaseFontActivity() {
         if (isPlayAnimDone && isAllPermissionGranted) {
             //TODO
 //            val intent = Intent(activity, MainActivity::class.java)
-            val intent = Intent(activity, RoomActivity::class.java)
+            val intent = Intent(activity, TestRoomActivity::class.java)
             startActivity(intent)
             LActivityUtil.tranIn(activity)
             LUIUtil.setDelay(mls = 1000, runnable = Runnable {
