@@ -63,7 +63,6 @@ class HistoryFragment : BaseFragment() {
                     override fun onLoadMore() {
                         pageIndex++
                         loadData()
-                        showShort("onLoadMore")
                     }
                 })
         rv.layoutManager = LinearLayoutManager(activity)
