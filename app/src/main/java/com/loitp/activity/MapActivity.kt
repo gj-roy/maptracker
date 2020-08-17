@@ -210,11 +210,11 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         currentLocationMarker?.remove()
         mCurrentLocation?.let { location ->
 
-            val latRound = LMathUtil.roundDouble(value = location.latitude, newScale = 3)
-            val lngRound = LMathUtil.roundDouble(value = location.longitude, newScale = 3)
+//            val latRound = LMathUtil.roundDouble(value = location.latitude, newScale = 3)
+//            val lngRound = LMathUtil.roundDouble(value = location.longitude, newScale = 3)
 
-//            val latRound = location.latitude
-//            val lngRound = location.longitude
+            val latRound = location.latitude
+            val lngRound = location.longitude
 
 //            val latRound: Double
 //            val lngRound: Double
