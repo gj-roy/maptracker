@@ -1,10 +1,10 @@
-package com.loitp.db.model
+package com.loitp.model
 
 import androidx.annotation.Keep
 import androidx.room.*
 import com.squareup.moshi.Json
 import com.loitp.db.converter.AreaConverter
-import com.loitp.db.model.Area
+import com.loitp.model.Area
 import java.io.Serializable
 
 @Keep

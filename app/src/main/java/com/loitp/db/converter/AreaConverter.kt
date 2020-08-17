@@ -3,7 +3,7 @@ package com.loitp.db.converter
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.loitp.db.model.Area
+import com.loitp.model.Area
 import java.lang.reflect.Type
 
 class AreaConverter {

@@ -1,4 +1,4 @@
-package com.loitp.db
+package com.loitp.model
 
 data class ActionData<T>(
         var isDoing: Boolean? = null,

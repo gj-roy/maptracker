@@ -1,11 +1,11 @@
-package com.loitp.db
+package com.loitp.model
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.core.utilities.LLog
-import com.google.ads.interactivemedia.v3.internal.it
+import com.loitp.enumtype.RequestStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

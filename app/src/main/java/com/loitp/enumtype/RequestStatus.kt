@@ -1,4 +1,4 @@
-package com.loitp.db
+package com.loitp.enumtype
 
 enum class RequestStatus(val value: Int) {
     NO_INTERNET_CONNECTION(value = 470),

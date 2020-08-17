@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.loitp.BuildConfig
 import com.loitp.db.converter.AreaConverter
-import com.loitp.db.model.FloorPlan
+import com.loitp.model.FloorPlan
 
 @Database(entities = [FloorPlan::class], version = BuildConfig.VERSION_CODE)
 abstract class FNBDatabase : RoomDatabase() {

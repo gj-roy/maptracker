@@ -1,4 +1,4 @@
-package com.loitp.db.model
+package com.loitp.model
 
 import androidx.annotation.Keep
 import com.squareup.moshi.Json

@@ -1,4 +1,4 @@
-package com.loitp.db
+package com.loitp.model
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.LifecycleOwner

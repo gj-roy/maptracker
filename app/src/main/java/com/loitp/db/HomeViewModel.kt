@@ -2,9 +2,12 @@ package com.loitp.db
 
 import android.app.Application
 import com.loitp.db.db.FNBDatabase
-import com.loitp.db.model.Area
-import com.loitp.db.model.FloorPlan
-import com.loitp.db.model.Table
+import com.loitp.model.Area
+import com.loitp.model.FloorPlan
+import com.loitp.model.Table
+import com.loitp.model.ActionData
+import com.loitp.model.ActionLiveData
+import com.loitp.model.BaseViewModel
 import kotlinx.coroutines.launch
 
 class HomeViewModel(application: Application) : BaseViewModel(application) {

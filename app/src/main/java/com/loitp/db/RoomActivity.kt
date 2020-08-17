@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.core.base.BaseFontActivity
 import com.loitp.R
 import com.loitp.app.LApplication
-import com.loitp.db.model.FloorPlan
+import com.loitp.model.FloorPlan
 import com.views.setSafeOnClickListener
 import kotlinx.android.synthetic.main.activity_database_room.*
 
