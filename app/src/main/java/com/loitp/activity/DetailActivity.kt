@@ -7,6 +7,7 @@ import com.core.utilities.LImageUtil
 import com.core.utilities.LUIUtil
 import com.loitp.R
 import com.loitp.model.History
+import com.loitp.util.ImageUtil
 import com.loitp.util.KeyConstant
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.view_item_history.view.*
@@ -34,8 +35,8 @@ class DetailActivity : BaseFontActivity() {
             onBackPressed()
         }
         if (obj is History) {
-            //TODO
-            LImageUtil.load(context = activity, url = Constants.URL_IMG, imageView = ivMap)
+            val file = ImageUtil.getFile(obj.fileName)
+            LImageUtil.load(context = activity, imageFile = file, imageView = ivMap)
             LImageUtil.setImageViewZoom(ivMap)
             tvDistance.text = obj.distance
             tvAvgSpeed.text = obj.avgSpeed
