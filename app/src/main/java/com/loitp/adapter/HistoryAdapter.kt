@@ -29,7 +29,7 @@ class HistoryAdapter(
             itemView.tvAvgSpeed.text = history.avgSpeed
             itemView.tvTimer.text = history.timer
 
-            val file = ImageUtil.getFile(history.fileName)
+            val file = ImageUtil.getFile(context = itemView.ivMap.context, fileName = history.fileName)
             LImageUtil.load(context = itemView.ivMap.context, imageFile = file, imageView = itemView.ivMap)
 
             itemView.rootView.setOnClickListener {

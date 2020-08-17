@@ -1,5 +1,6 @@
 package com.loitp.util
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Environment
 import android.util.Log
@@ -8,27 +9,23 @@ import java.io.FileOutputStream
 
 class ImageUtil {
     companion object {
-        fun saveBitmap(bitmap: Bitmap, fileName: String): File? {
+        fun saveBitmap(context: Context, bitmap: Bitmap, fileName: String): File? {
             return if (isExternalStorageWritable()) {
-                saveImage(finalBitmap = bitmap, fileName = fileName)
+                saveImage(context = context, finalBitmap = bitmap, fileName = fileName)
             } else {
                 null
             }
         }
 
-        //TODO fix DEPRECATION later
-        @Suppress("DEPRECATION")
-        fun getFile(fileName: String): File? {
-            val root = Environment.getExternalStorageDirectory().toString()
+        fun getFile(context: Context, fileName: String): File? {
+            val root = context.getExternalFilesDir(null)?.absolutePath
             val myDir = File("$root/.mapTracker")
             val path = myDir.absolutePath + "/" + fileName
             return File(path)
         }
 
-        //TODO fix DEPRECATION later
-        @Suppress("DEPRECATION")
-        private fun saveImage(finalBitmap: Bitmap, fileName: String): File? {
-            val root = Environment.getExternalStorageDirectory().toString()
+        private fun saveImage(context: Context, finalBitmap: Bitmap, fileName: String): File? {
+            val root = context.getExternalFilesDir(null)?.absolutePath
             val myDir = File("$root/.mapTracker")
             myDir.mkdirs()
             val file = File(myDir, fileName)

@@ -35,7 +35,7 @@ class DetailActivity : BaseFontActivity() {
             onBackPressed()
         }
         if (obj is History) {
-            val file = ImageUtil.getFile(obj.fileName)
+            val file = ImageUtil.getFile(activity, obj.fileName)
             LImageUtil.load(context = activity, imageFile = file, imageView = ivMap)
             LImageUtil.setImageViewZoom(ivMap)
             tvDistance.text = obj.distance
