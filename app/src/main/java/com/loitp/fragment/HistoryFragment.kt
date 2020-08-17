@@ -3,16 +3,18 @@ package com.loitp.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.core.base.BaseFragment
-import com.core.common.Constants
 import com.core.utilities.LActivityUtil
 import com.loitp.R
 import com.loitp.activity.DetailActivity
 import com.loitp.activity.MapActivity
 import com.loitp.adapter.HistoryAdapter
+import com.loitp.app.LApplication
 import com.loitp.model.History
 import com.loitp.util.KeyConstant
+import com.loitp.viewmodel.HomeViewModel
 import com.views.setSafeOnClickListener
 import kotlinx.android.synthetic.main.frm_history.*
 import java.util.*
@@ -21,10 +23,26 @@ class HistoryFragment : BaseFragment() {
 
     private val listHistory = ArrayList<History>()
     private var historyAdapter: HistoryAdapter? = null
+    private var homeViewModel: HomeViewModel? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        logD("onViewCreated")
+        setupViews()
+        setupViewModels()
 
+        homeViewModel?.getListByIndex(0, 2)//3 item
+    }
+
+    override fun setLayoutResourceId(): Int {
+        return R.layout.frm_history
+    }
+
+    override fun setTag(): String? {
+        return "loitpp" + javaClass.simpleName
+    }
+
+    private fun setupViews() {
         historyAdapter = HistoryAdapter(
                 moviesList = listHistory,
                 callback = object : HistoryAdapter.Callback {
@@ -45,8 +63,6 @@ class HistoryFragment : BaseFragment() {
         rv.layoutManager = LinearLayoutManager(activity)
         rv.adapter = historyAdapter
 
-        loadData()
-
         btRecord.setSafeOnClickListener {
             activity?.let { a ->
                 val intent = Intent(a, MapActivity::class.java)
@@ -56,25 +72,25 @@ class HistoryFragment : BaseFragment() {
         }
     }
 
-    override fun setLayoutResourceId(): Int {
-        return R.layout.frm_history
-    }
-
-    override fun setTag(): String? {
-        return javaClass.simpleName
-    }
-
-    private fun loadData() {
-        var cover: String
-        for (i in 0..5) {
-            cover = if (i % 2 == 0) {
-                Constants.URL_IMG_1
+    private fun setupViewModels() {
+        homeViewModel = getViewModel(HomeViewModel::class.java)
+        homeViewModel?.getByIndexHistoryActionLiveData?.observe(viewLifecycleOwner, Observer { actionData ->
+            logD("getByIndexHistoryActionLiveData " + LApplication.gson.toJson(actionData))
+            val isDoing = actionData.isDoing
+            if (isDoing == true) {
+                indicatorView.smoothToShow()
             } else {
-                Constants.URL_IMG_2
+                indicatorView.smoothToHide()
+                val data = actionData.data
+                logD("getByIndexHistoryActionLiveData ${data?.size} " + LApplication.gson.toJson(data))
+                if (data.isNullOrEmpty()) {
+                    tvNoData.visibility = View.VISIBLE
+                } else {
+                    tvNoData.visibility = View.GONE
+                    listHistory.addAll(data)
+                    historyAdapter?.notifyDataSetChanged()
+                }
             }
-            val history = History(distance = "Loitp $i", avgSpeed = "Action & Adventure $i", timer = "Year: $i", fileName = cover)
-            listHistory.add(history)
-        }
-        historyAdapter?.notifyDataSetChanged()
+        })
     }
 }

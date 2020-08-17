@@ -114,6 +114,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
             hvm.insertHistoryActionLiveData.observe(this, Observer { actionData ->
                 actionData.data?.let {
 //                    logD("insertHistoryActionLiveData " + LApplication.gson.toJson(it))
+                    showShort(getString(R.string.saved))
                     onBackPressed()
                 }
             })
