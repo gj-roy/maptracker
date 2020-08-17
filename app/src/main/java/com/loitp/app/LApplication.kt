@@ -10,8 +10,6 @@ import com.google.gson.Gson
 import com.loitp.db.AppDatabase
 import com.utils.util.Utils
 
-//TODO debug const
-
 class LApplication : MultiDexApplication() {
     private val logTag = LApplication::class.java.simpleName
 
@@ -22,7 +20,7 @@ class LApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
 
-        Constants.setIsDebug(true)
+        Constants.setIsDebug(false)
         Utils.init(this)
 
         ActivityData.instance.type = Constants.TYPE_ACTIVITY_TRANSITION_SLIDELEFT
