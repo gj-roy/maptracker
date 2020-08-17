@@ -78,11 +78,9 @@ class SplashActivity : BaseFontActivity() {
     }
 
     private fun goToHome() {
-        logD("goToHome isPlayAnimDone $isPlayAnimDone, isAllPermissionGranted: $isAllPermissionGranted")
+//        logD("goToHome isPlayAnimDone $isPlayAnimDone, isAllPermissionGranted: $isAllPermissionGranted")
         if (isPlayAnimDone && isAllPermissionGranted) {
-            //TODO
-//            val intent = Intent(activity, MainActivity::class.java)
-            val intent = Intent(activity, TestRoomActivity::class.java)
+            val intent = Intent(activity, MainActivity::class.java)
             startActivity(intent)
             LActivityUtil.tranIn(activity)
             LUIUtil.setDelay(mls = 1000, runnable = Runnable {

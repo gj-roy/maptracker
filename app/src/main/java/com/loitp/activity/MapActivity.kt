@@ -321,7 +321,7 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         if (listLatLng.isNotEmpty()) {
             val polyOptions = PolylineOptions()
             polyOptions.color(Color.GRAY)
-            polyOptions.width(25f)
+            polyOptions.width(15f)
             polyOptions.addAll(listLatLng)
             mGoogleMap?.addPolyline(polyOptions)
             val builder = LatLngBounds.Builder()
