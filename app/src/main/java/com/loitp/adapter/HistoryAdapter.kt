@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.core.common.Constants
 import com.core.utilities.LImageUtil
+import com.google.ads.interactivemedia.v3.internal.it
 import com.loitp.R
 import com.loitp.model.History
+import com.loitp.util.ImageUtil
 import kotlinx.android.synthetic.main.view_item_history.view.*
 
 class HistoryAdapter(
@@ -27,8 +29,8 @@ class HistoryAdapter(
             itemView.tvAvgSpeed.text = history.avgSpeed
             itemView.tvTimer.text = history.timer
 
-            //TODO load bitmap
-            LImageUtil.load(context = itemView.ivMap.context, url = Constants.URL_IMG, imageView = itemView.ivMap)
+            val file = ImageUtil.getFile(history.fileName)
+            LImageUtil.load(context = itemView.ivMap.context, imageFile = file, imageView = itemView.ivMap)
 
             itemView.rootView.setOnClickListener {
                 callback?.onClick(history, bindingAdapterPosition)

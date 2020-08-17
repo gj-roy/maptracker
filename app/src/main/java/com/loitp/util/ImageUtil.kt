@@ -2,20 +2,30 @@ package com.loitp.util
 
 import android.graphics.Bitmap
 import android.os.Environment
+import android.util.Log
 import java.io.File
 import java.io.FileOutputStream
 
 class ImageUtil {
     companion object {
         fun saveBitmap(bitmap: Bitmap, fileName: String): File? {
-            if (isExternalStorageWritable()) {
-                return saveImage(finalBitmap = bitmap, fileName = fileName)
+            return if (isExternalStorageWritable()) {
+                saveImage(finalBitmap = bitmap, fileName = fileName)
             } else {
-                return null
+                null
             }
         }
 
-        //TODO fix DEPRECATION
+        //TODO fix DEPRECATION later
+        @Suppress("DEPRECATION")
+        fun getFile(fileName: String): File? {
+            val root = Environment.getExternalStorageDirectory().toString()
+            val myDir = File("$root/.mapTracker")
+            val path = myDir.absolutePath + "/" + fileName
+            return File(path)
+        }
+
+        //TODO fix DEPRECATION later
         @Suppress("DEPRECATION")
         private fun saveImage(finalBitmap: Bitmap, fileName: String): File? {
             val root = Environment.getExternalStorageDirectory().toString()
