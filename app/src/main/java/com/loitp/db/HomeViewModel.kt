@@ -2,12 +2,10 @@ package com.loitp.db
 
 import android.app.Application
 import com.loitp.db.db.FNBDatabase
-import com.loitp.model.Area
-import com.loitp.model.FloorPlan
-import com.loitp.model.Table
 import com.loitp.model.ActionData
 import com.loitp.model.ActionLiveData
 import com.loitp.model.BaseViewModel
+import com.loitp.model.FloorPlan
 import kotlinx.coroutines.launch
 
 class HomeViewModel(application: Application) : BaseViewModel(application) {
@@ -26,31 +24,6 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
 
         floorPlan.id = id
         floorPlan.name = name
-
-        val listArea = ArrayList<Area>()
-        for (j in 0..1) {
-            val area = Area()
-
-            area.id = "$j"
-            area.name = "Name $j"
-
-            val listTable = ArrayList<Table>()
-
-            for (u in 0..1) {
-                val table = Table()
-
-                table.id = "$u"
-                table.name = "Name $u"
-
-                listTable.add(table)
-            }
-
-            area.tables = listTable
-
-            listArea.add(area)
-        }
-
-        floorPlan.areas = listArea
 
         return floorPlan
     }

@@ -4,15 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import com.loitp.BuildConfig
-import com.loitp.db.converter.AreaConverter
 import com.loitp.model.FloorPlan
 
 @Database(entities = [FloorPlan::class], version = BuildConfig.VERSION_CODE)
 abstract class FNBDatabase : RoomDatabase() {
-
-    @TypeConverters(AreaConverter::class)
 
     abstract fun floorPlanDao(): FloorPlanDao
 
