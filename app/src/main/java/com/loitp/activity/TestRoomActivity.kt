@@ -195,7 +195,7 @@ class TestRoomActivity : BaseFontActivity() {
     }
 
     private fun handleInsert() {
-        homeViewModel?.insertHistory()
+//        homeViewModel?.insertHistory(history)
     }
 
     private fun handleSaveListFrom0To10() {

@@ -128,11 +128,9 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
         }
     }
 
-    fun insertHistory() {
+    fun insertHistory(history: History) {
         ioScope.launch {
             insertHistoryActionLiveData.post(ActionData(isDoing = true))
-            val id = System.currentTimeMillis()
-            val history = genHistory(id = id.toString(), name = "Name $id")
             AppDatabase.instance?.historyDao()?.insert(history)
             insertHistoryActionLiveData.post(ActionData(isDoing = false, data = history))
         }

@@ -13,6 +13,7 @@ import android.provider.Settings
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.core.base.BaseFontActivity
 import com.core.utilities.LDialogUtil
 import com.core.utilities.LMathUtil
@@ -31,10 +32,12 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.loitp.R
+import com.loitp.model.History
 import com.loitp.model.Loc
 import com.loitp.util.ImageUtil
 import com.loitp.util.LocUtil
 import com.loitp.util.TimeUtil
+import com.loitp.viewmodel.HomeViewModel
 import com.views.setSafeOnClickListener
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -68,9 +71,10 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
     private var isShowDialogCheck = false
     private var disposableTimer: Disposable? = null
     private var currentTimerSecond = 0L
+    private var homeViewModel: HomeViewModel? = null
 
     override fun setTag(): String? {
-        return "loitpp" + javaClass.simpleName
+        return javaClass.simpleName
     }
 
     override fun setLayoutResourceId(): Int {
@@ -83,7 +87,11 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupViews()
+        setupViewModels()
+    }
 
+    private fun setupViews() {
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
 
@@ -97,6 +105,19 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
         }
         btStop.setSafeOnClickListener {
             handleStop()
+        }
+    }
+
+    private fun setupViewModels() {
+        homeViewModel = getViewModel(HomeViewModel::class.java)
+        homeViewModel?.let { hvm ->
+            hvm.insertHistoryActionLiveData.observe(this, Observer { actionData ->
+                actionData.data?.let {
+//                    logD("insertHistoryActionLiveData " + LApplication.gson.toJson(it))
+                    onBackPressed()
+                }
+            })
+
         }
     }
 
@@ -450,13 +471,24 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
 
     private fun handleStop() {
         mGoogleMap?.snapshot { bitmap ->
-            val fileName = "${System.currentTimeMillis()}.png"
+            val id = System.currentTimeMillis().toString()
+            val fileName = "$id.png"
             val fileSaved = ImageUtil.saveBitmap(bitmap = bitmap, fileName = fileName)
             logD("handleStop isSaved ${fileSaved?.path}")
             if (fileSaved == null) {
                 showShort(getString(R.string.cannot_save_map))
             } else {
-                //TODO save
+                val distance = tvDistance.text.toString()
+                val avgSpeed = tvAvgSpeed.text.toString()
+                val timer = tvTimer.text.toString()
+                val history = History(
+                        id = id,
+                        distance = distance,
+                        avgSpeed = avgSpeed,
+                        timer = timer,
+                        fileName = fileName
+                )
+                homeViewModel?.insertHistory(history = history)
             }
         }
     }
