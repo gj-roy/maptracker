@@ -1,6 +1,7 @@
 package com.loitp.activity
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -15,6 +16,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.core.base.BaseFontActivity
+import com.core.utilities.LActivityUtil
 import com.core.utilities.LDialogUtil
 import com.core.utilities.LMathUtil
 import com.google.android.gms.common.ConnectionResult
@@ -35,6 +37,7 @@ import com.loitp.R
 import com.loitp.model.History
 import com.loitp.model.Loc
 import com.loitp.util.ImageUtil
+import com.loitp.util.KeyConstant
 import com.loitp.util.LocUtil
 import com.loitp.util.TimeUtil
 import com.loitp.viewmodel.HomeViewModel
@@ -115,7 +118,10 @@ class MapActivity : BaseFontActivity(), OnMapReadyCallback,
                 actionData.data?.let {
 //                    logD("insertHistoryActionLiveData " + LApplication.gson.toJson(it))
                     showShort(getString(R.string.saved))
-                    onBackPressed()
+                    val returnIntent = Intent()
+                    setResult(Activity.RESULT_OK, returnIntent)
+                    finish()
+                    LActivityUtil.tranOut(activity)
                 }
             })
 
