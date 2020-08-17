@@ -18,6 +18,7 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.loitp.BuildConfig
 import com.loitp.R
+import com.loitp.db.RoomActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : BaseFontActivity() {
@@ -80,7 +81,9 @@ class SplashActivity : BaseFontActivity() {
     private fun goToHome() {
         logD("goToHome isPlayAnimDone $isPlayAnimDone, isAllPermissionGranted: $isAllPermissionGranted")
         if (isPlayAnimDone && isAllPermissionGranted) {
-            val intent = Intent(activity, MainActivity::class.java)
+            //TODO
+//            val intent = Intent(activity, MainActivity::class.java)
+            val intent = Intent(activity, RoomActivity::class.java)
             startActivity(intent)
             LActivityUtil.tranIn(activity)
             LUIUtil.setDelay(mls = 1000, runnable = Runnable {

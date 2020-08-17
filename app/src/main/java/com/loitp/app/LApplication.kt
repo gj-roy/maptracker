@@ -7,6 +7,7 @@ import com.data.ActivityData
 import com.github.piasy.biv.BigImageViewer
 import com.github.piasy.biv.loader.glide.GlideImageLoader
 import com.google.gson.Gson
+import com.loitp.db.db.FNBDatabase
 import com.utils.util.Utils
 
 //TODO debug const
@@ -31,5 +32,8 @@ class LApplication : MultiDexApplication() {
 
         //big imageview
         BigImageViewer.initialize(GlideImageLoader.with(applicationContext))
+
+        //room database
+        FNBDatabase.getInstance(this)
     }
 }
