@@ -12,6 +12,7 @@ import com.loitp.R
 import com.loitp.activity.DetailActivity
 import com.loitp.activity.MapActivity
 import com.loitp.adapter.HistoryAdapter
+import com.loitp.app.LApplication
 import com.loitp.model.History
 import com.loitp.util.KeyConstant
 import com.loitp.viewmodel.HomeViewModel
@@ -24,6 +25,7 @@ class HistoryFragment : BaseFragment() {
     private val listHistory = ArrayList<History>()
     private var historyAdapter: HistoryAdapter? = null
     private var homeViewModel: HomeViewModel? = null
+    private var pageIndex = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,7 +36,7 @@ class HistoryFragment : BaseFragment() {
     }
 
     private fun loadData() {
-        homeViewModel?.getListByIndex(0, 100)//3 item
+        homeViewModel?.getListByPage(pageIndex = pageIndex)
     }
 
     override fun setLayoutResourceId(): Int {
@@ -59,7 +61,8 @@ class HistoryFragment : BaseFragment() {
                     }
 
                     override fun onLoadMore() {
-                        //TODO
+                        pageIndex++
+                        loadData()
                         showShort("onLoadMore")
                     }
                 })
@@ -77,20 +80,22 @@ class HistoryFragment : BaseFragment() {
 
     private fun setupViewModels() {
         homeViewModel = getViewModel(HomeViewModel::class.java)
-        homeViewModel?.getByIndexHistoryActionLiveData?.observe(viewLifecycleOwner, Observer { actionData ->
-//            logD("getByIndexHistoryActionLiveData " + LApplication.gson.toJson(actionData))
+        homeViewModel?.getHistoryPageActionLiveData?.observe(viewLifecycleOwner, Observer { actionData ->
+//            logD("getHistoryPageActionLiveData " + LApplication.gson.toJson(actionData))
             val isDoing = actionData.isDoing
             if (isDoing == true) {
                 indicatorView.smoothToShow()
             } else {
                 indicatorView.smoothToHide()
                 val data = actionData.data
-//                logD("getByIndexHistoryActionLiveData ${data?.size} " + LApplication.gson.toJson(data))
+                logD("getHistoryPageActionLiveData ${data?.size} " + LApplication.gson.toJson(data))
                 if (data.isNullOrEmpty()) {
-                    tvNoData.visibility = View.VISIBLE
+                    if (listHistory.isNullOrEmpty()) {
+                        tvNoData.visibility = View.VISIBLE
+                    }
                 } else {
                     tvNoData.visibility = View.GONE
-                    listHistory.addAll(data.reversed())
+                    listHistory.addAll(data)
                     historyAdapter?.notifyDataSetChanged()
                 }
             }
@@ -102,6 +107,7 @@ class HistoryFragment : BaseFragment() {
         if (requestCode == KeyConstant.REQUEST_CODE_MAP && resultCode == Activity.RESULT_OK) {
             listHistory.clear()
             historyAdapter?.notifyDataSetChanged()
+            pageIndex = 0
             loadData()
         }
     }

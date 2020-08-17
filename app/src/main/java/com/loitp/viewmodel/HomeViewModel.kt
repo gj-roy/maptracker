@@ -1,16 +1,19 @@
 package com.loitp.viewmodel
 
 import android.app.Application
+import android.util.Log
 import com.loitp.db.AppDatabase
 import com.loitp.model.ActionData
 import com.loitp.model.ActionLiveData
 import com.loitp.model.History
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class HomeViewModel(application: Application) : BaseViewModel(application) {
     private val TAG = "loitpp" + javaClass.simpleName
     val saveHistoryActionLiveData: ActionLiveData<ActionData<ArrayList<History>>> = ActionLiveData()
     val getHistoryActionLiveData: ActionLiveData<ActionData<List<History>>> = ActionLiveData()
+    val getHistoryPageActionLiveData: ActionLiveData<ActionData<ArrayList<History>>> = ActionLiveData()
     val getByIndexHistoryActionLiveData: ActionLiveData<ActionData<List<History>>> = ActionLiveData()
     val deleteHistoryActionLiveData: ActionLiveData<ActionData<History>> = ActionLiveData()
     val updateHistoryActionLiveData: ActionLiveData<ActionData<History>> = ActionLiveData()
@@ -84,6 +87,39 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
                             isDoing = false,
                             isSuccess = true,
                             data = listHistory
+                    )
+            )
+        }
+    }
+
+    //I dont have time, so I decided to make a fake func to separate page
+    //Of course in real production, I will do this
+    fun getListByPage(pageIndex: Int) {
+        Log.d("loitpp", "getListByPage pageIndex $pageIndex")
+        getHistoryPageActionLiveData.set(ActionData(isDoing = true))
+        ioScope.launch {
+            val listHistory = AppDatabase.instance?.historyDao()?.getAllHistory()?.reversed()
+            val listHistoryPage = ArrayList<History>()
+            val pageSize = 2
+
+            listHistory?.let {
+                val startIndex = pageIndex * pageSize
+                val endIndex = startIndex + pageSize - 1
+                for (i in startIndex..endIndex) {
+                    try {
+                        val h = listHistory[i]
+                        listHistoryPage.add(h)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            getHistoryPageActionLiveData.post(
+                    ActionData(
+                            isDoing = false,
+                            isSuccess = true,
+                            data = listHistoryPage
                     )
             )
         }
