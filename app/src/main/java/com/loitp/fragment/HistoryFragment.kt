@@ -26,6 +26,7 @@ class HistoryFragment : BaseFragment() {
     private var historyAdapter: HistoryAdapter? = null
     private var homeViewModel: HomeViewModel? = null
     private var pageIndex = 0
+    private var isFullData = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,8 +62,10 @@ class HistoryFragment : BaseFragment() {
                     }
 
                     override fun onLoadMore() {
-                        pageIndex++
-                        loadData()
+                        if (!isFullData) {
+                            pageIndex++
+                            loadData()
+                        }
                     }
                 })
         rv.layoutManager = LinearLayoutManager(activity)
@@ -87,11 +90,12 @@ class HistoryFragment : BaseFragment() {
             } else {
                 indicatorView.smoothToHide()
                 val data = actionData.data
-                logD("getHistoryPageActionLiveData ${data?.size} " + LApplication.gson.toJson(data))
+//                logD("getHistoryPageActionLiveData ${data?.size} " + LApplication.gson.toJson(data))
                 if (data.isNullOrEmpty()) {
                     if (listHistory.isNullOrEmpty()) {
                         tvNoData.visibility = View.VISIBLE
                     }
+                    isFullData = true
                 } else {
                     tvNoData.visibility = View.GONE
                     listHistory.addAll(data)

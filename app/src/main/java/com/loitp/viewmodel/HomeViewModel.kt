@@ -95,12 +95,11 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     //I dont have time, so I decided to make a fake func to separate page
     //Of course in real production, I will do this
     fun getListByPage(pageIndex: Int) {
-        Log.d("loitpp", "getListByPage pageIndex $pageIndex")
         getHistoryPageActionLiveData.set(ActionData(isDoing = true))
         ioScope.launch {
             val listHistory = AppDatabase.instance?.historyDao()?.getAllHistory()?.reversed()
             val listHistoryPage = ArrayList<History>()
-            val pageSize = 2
+            val pageSize = 5
 
             listHistory?.let {
                 val startIndex = pageIndex * pageSize
