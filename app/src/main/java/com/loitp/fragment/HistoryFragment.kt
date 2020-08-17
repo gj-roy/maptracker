@@ -31,7 +31,7 @@ class HistoryFragment : BaseFragment() {
         setupViews()
         setupViewModels()
 
-        homeViewModel?.getListByIndex(0, 2)//3 item
+        homeViewModel?.getListByIndex(0, 100)//3 item
     }
 
     override fun setLayoutResourceId(): Int {
@@ -87,7 +87,7 @@ class HistoryFragment : BaseFragment() {
                     tvNoData.visibility = View.VISIBLE
                 } else {
                     tvNoData.visibility = View.GONE
-                    listHistory.addAll(data)
+                    listHistory.addAll(data.reversed())
                     historyAdapter?.notifyDataSetChanged()
                 }
             }
