@@ -155,7 +155,7 @@ class MainActivity : BaseFontActivity(), NavigationView.OnNavigationItemSelected
                 LSocialUtil.rateApp(activity = activity, packageName = packageName)
             }
             R.id.navMoreApp -> {
-                LSocialUtil.moreApp(activity)
+                LSocialUtil.moreApp(activity, "NgonTinh KangKang")
             }
             R.id.navFacebookFanPage -> {
                 LSocialUtil.likeFacebookFanpage(activity)
